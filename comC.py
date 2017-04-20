@@ -6,6 +6,7 @@ from math import sqrt,cos,sin,atan2
 from lineIntersect import *
 
 numNodes = 10
+radMov = 10
 
 class Node:
     x = 0
@@ -18,6 +19,14 @@ class Node:
 
 def dist(xy1,xy2):
     return sqrt((xy1[0]-xy2[0])*(xy1[0]-xy2[0])+(xy1[1]-xy2[1])*(xy1[1]-xy2[1]))
+
+def nodeInDir(xy1,xy2):
+    if(dist(xy1,xy2) < radMov):
+        return xy2
+    else:
+        theta = atan2(xy2[1]-xy1[1],xy2[0]-xy1[0])
+        return xy1[0] + EPSILON*cos(theta), xy1[1] + EPSILON*sin(theta)
+
 
 def main():
     nodes = []
@@ -38,9 +47,8 @@ def main():
                 cnode = n
         #interpolation towards the voronoi node from the closest node
         #the function should return the closest 'node' in the direction
-
-
-
+        tnode = nodeInDir([vnode.x,vnode.y],[cnode.x,cnode.y])
+        nodeint = Node(tnode[0],tnode[1])
 
 
 if __name__ == '__main__':
