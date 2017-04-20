@@ -21,6 +21,7 @@ def dist(xy1,xy2):
 
 def main():
     nodes = []
+    #insert start node
     nodes.append(Node(0.0,0.0))
     startnode = nodes[0]
     goalnode = Node(500.0,500.0)
