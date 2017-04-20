@@ -1,5 +1,5 @@
 #This is the skeleton code for our project. Currently I am working on adding the RRT potion of the code. I have commented
-#where the different blocks of code will go. the pygame imports can be removed as we will be using Tkinter()
+#where the different blocks of code will go. the pygame imports can be removed as we will be using Tkinter()-Siddharth
 import sys, random, math, pygame
 from pygame.locals import *
 from math import sqrt,cos,sin,atan2
@@ -25,7 +25,7 @@ def nodeInDir(xy1,xy2):
         return xy2
     else:
         theta = atan2(xy2[1]-xy1[1],xy2[0]-xy1[0])
-        return xy1[0] + EPSILON*cos(theta), xy1[1] + EPSILON*sin(theta)
+        return xy1[0] + radMov*cos(theta), xy1[1] + radMov*sin(theta)
 
 
 def main():
