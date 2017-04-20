@@ -149,7 +149,7 @@ def main():
     goalnode = Node(500.0,500.0)
     for i in range(numNodes):
         #voronoi section
-        #ends with giving a point (x,y)
+        #ends with giving a point from largest region (x,y)
         xpt = 0
         ypt = 0
         vnode = Node(xpt,ypt)
