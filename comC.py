@@ -117,7 +117,7 @@ def vrni_region(points):
         poly_for_region = [p for p in poly.exterior.coords]
         print(poly_for_region)
         polygons.append(poly_for_region)
-    #the variable 'polygons' contains the coordinates for all voronoi regions
+    #the variable polygons contains the coordinates for all voronoi regions
     #I am working on isolating the regions and relating them to their respective
     #polygons
 
@@ -162,7 +162,7 @@ def main():
         #the function should return the closest 'node' in the direction
         tnode = nodeInDir([vnode.x,vnode.y],[cnode.x,cnode.y])
         nodeint = Node(tnode[0],tnode[1])
-
+        nodes.append(nodeint)
 
 if __name__ == '__main__':
     main()
