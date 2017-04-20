@@ -37,7 +37,7 @@ def main():
             if (dist([n.x,n.y],[vnode.x,vnode.y]) < dist([cnode.x,cnode.y],[vnode.x,vnode.y])):
                 cnode = n
         #interpolation towards the voronoi node from the closest node
-
+        #the function should return the closest 'node' in the direction
 
 
 
