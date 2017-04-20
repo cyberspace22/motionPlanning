@@ -1,3 +1,5 @@
+#This is the skeleton code for our project. Currently I am working on adding the RRT potion of the code. I have commented
+#where the different blocks of code will go. the pygame imports can be removed as we will be using Tkinter()
 import sys, random, math, pygame
 from pygame.locals import *
 from math import sqrt,cos,sin,atan2
