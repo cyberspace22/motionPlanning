@@ -1,0 +1,237 @@
+import numpy as np
+from math import sqrt
+from Tkinter import *
+import time
+import functools
+
+
+#Drawing parameters
+pixelsize = 1024
+framedelay = 30
+drawVels = True
+QUIT = False
+paused = False
+step = False
+circles = []
+velLines = []
+gvLines = []
+
+
+
+#Initalize parameters to run a simulation
+# the simulation time step
+dt = 0.05
+scenarioFile='snake_agent.csv'
+# export the simulation?
+doExport = True
+# the simulated agents
+agents = []
+# keep track of the agents' traces
+trajectories = []
+# keep track of simulation iterations
+ittr = 0
+#how many time steps we want to simulate
+maxIttr = 500
+# simuation time
+globalTime = 0
+# is the agent close to its goal?
+goalRadiusSq = 1
+# have all agents reached their goals
+reachedGoals = False
+# the goal force scale
+xi = 0.5
+#num agets
+num = 0
+
+angle=30
+close=1
+
+
+def readScenario(fileName, scalex=1., scaley=1.):
+    if fileName=='allway_agents.csv':
+        scalex = 0.75
+        scaley = 2
+
+    # it may be better to define an Agent class, here I'm using a lazy approach
+    fp = open(fileName, 'r')
+    lines = fp.readlines()
+    fp.close()
+    for line in lines:
+        tokens = line.split(',')
+        id = int(tokens[0]) # the id of the agent
+        gid = int(tokens[1]) # the group id of the agent
+        if gid==1:
+            pos = np.array([float(tokens[2]), float(tokens[3])])
+            vel = np.zeros(2) # the velocity of the agent
+            goal = np.array([float(tokens[2]), float(tokens[3])]) # the goal of the agent
+            prefspeed = float(0) # the preferred speed of the agent
+            gvel = goal-pos # the goal velocity of the agent
+            #gvel = gvel/(sqrt(gvel.dot(gvel)))*prefspeed
+            maxspeed = float(0) # the maximum sped of the agent
+            radius = float(tokens[4]) # the radius of the agent
+        else:
+            pos = np.array([float(tokens[2]), float(tokens[3])]) # the position of the agent
+            vel = np.zeros(2) # the velocity of the agent
+            goal = np.array([float(tokens[4]), float(tokens[5])]) # the goal of the agent
+            prefspeed = float(tokens[6]) # the preferred speed of the agent
+            gvel = goal-pos # the goal velocity of the agent
+            gvel = gvel/(sqrt(gvel.dot(gvel)))*prefspeed
+            maxspeed = float(tokens[7]) # the maximum sped of the agent
+            radius = float(tokens[8]) # the radius of the agent
+        agents.append([id, gid, pos, vel, gvel, goal, radius, prefspeed, maxspeed, False])
+
+    # define the boundaries of the environment
+    positions = [row[2] for row in agents]
+    goals = [row[5] for row in agents]
+    x_min =	min(np.amin(np.array(positions)[:,0]), np.amin(np.array(goals)[:,0]))*scalex - 2.
+    y_min =	min(np.amin(np.array(positions)[:,1]), np.amin(np.array(goals)[:,1]))*scaley - 2.
+    x_max =	max(np.amax(np.array(positions)[:,0]), np.amax(np.array(goals)[:,0]))*scalex + 2.
+    y_max =	max(np.amax(np.array(positions)[:,1]), np.amax(np.array(goals)[:,1]))*scaley + 2.
+
+    num = len(agents);
+
+    return x_min, x_max, y_min, y_max
+
+def initWorld(canvas):
+    print ("")
+    print ("Simulation of Agents on a flat 2D torus.")
+    print ("Agents do not avoid collisions")
+    print ("Green Arrow is Goal Velocity, Red Arrow is Current Velocity")
+    print ("SPACE to pause, 'S' to step frame-by-frame, 'V' to turn the velocity display on/off.")
+    print ("")
+
+    colors = ["white","blue","yellow", "#FAA"]
+    for agent in agents:
+        if agent[1]!=1:
+            circles.append(canvas.create_arc(0, 0, agent[6], agent[6],start=30,extent=300, fill=colors[agent[1]%4])) # color the disc of an agent based on its group id
+        else:
+            circles.append(canvas.create_rectangle(0,0,agent[6],agent[6], fill=colors[agent[1]%4]))
+        #circles.append(agent[6])
+        velLines.append(canvas.create_line(0,0,10,10,fill="red"))
+        gvLines.append(canvas.create_line(0,0,10,10,fill="green"))
+
+def drawWorld():
+    global angle,close
+    for i in range(len(agents)):
+        agent = agents[i]
+        '''
+        if not agent[-1]:
+            if angle >0 and close ==1:
+                angle=angle-1
+                if angle ==0:
+                    close =0
+            elif angle<30 and close==0:
+                angle =angle+1
+                if angle ==30:
+                    close=1
+        colors = ["white","blue","yellow", "#FAA"]
+        #arc = canvas.create_arc(0, 0, circles[i], circles[i],outline="gray",start=angle,extent=(360-2*angle),fill="gray")
+        circ= canvas.create_arc(0, 0, circles[i], circles[i],start=angle,extent=360-2*angle, fill=colors[agent[1]%4])
+        '''
+        canvas.coords(circles[i],world_scale*(agent[2][0]- agent[6] - world_xmin), world_scale*(agent[2][1] - agent[6] - world_ymin), world_scale*(agent[2][0] + agent[6] - world_xmin), world_scale*(agent[2][1] + agent[6] - world_ymin))
+        canvas.coords(velLines[i],world_scale*(agent[2][0] - world_xmin), world_scale*(agent[2][1] - world_ymin), world_scale*(agent[2][0]+ agent[6]*agent[3][0] - world_xmin), world_scale*(agent[2][1] + agent[6]*agent[3][1] - world_ymin))
+        canvas.coords(gvLines[i],world_scale*(agent[2][0] - world_xmin), world_scale*(agent[2][1] - world_ymin), world_scale*(agent[2][0]+ agent[6]*agent[4][0] - world_xmin), world_scale*(agent[2][1] + agent[6]*agent[4][1] - world_ymin))
+        if drawVels:
+            canvas.itemconfigure(velLines[i], state="normal")
+            canvas.itemconfigure(gvLines[i], state="normal")
+        else:
+            canvas.itemconfigure(velLines[i], state="hidden")
+            canvas.itemconfigure(gvLines[i], state="hidden")
+
+def on_key_press(event):
+    global paused, step, QUIT, drawVels
+
+    if event.keysym == "space":
+        paused = not paused
+    if event.keysym == "s":
+        step = True
+        paused = False
+    if event.keysym == "v":
+        drawVels = not drawVels
+    if event.keysym == "Escape":
+        QUIT = True
+
+def updateSim(dt):
+    global reachedGoals
+
+    F = [] #force
+
+    for i in range(len(agents)):
+        F.append(np.zeros(2))
+
+    for i in range(len(agents)):
+        agent = agents[i]
+        if not agent[-1]:
+            agent[5]=np.array([9,1])
+            F[i] += (agent[4]-agent[3])/xi
+
+    reachedGoals = True
+    for i in range(len(agents)):
+        agent = agents[i]
+        if not agent[-1]:
+            agent[3] += F[i]*dt       # update the velocity
+            mag = np.sqrt(agent[3].dot(agent[3])) # cap the velocity to max speed
+            if (mag > agent[8]): agent[3] = agent[8]*agent[3]/mag
+
+            agent[2] += agent[3]*dt   #update the position
+
+            gvel = agent[5] - agent[2]
+            distGoalSq = gvel.dot(gvel)
+            # goal has been reached
+            if distGoalSq < goalRadiusSq:
+                agent[-1] = True
+            else:
+                #compute the goal velocity for the next time step
+                gvel = gvel/sqrt(distGoalSq)*agent[7]
+                agent[4] = gvel
+                reachedGoals = False
+
+def drawFrame(dt):
+    global start_time,step,paused,ittr,globalTime
+
+    if reachedGoals or ittr > maxIttr or QUIT: #Simulation Loop
+        print("%s itterations ran ... quitting"%ittr)
+        win.destroy()
+    else:
+        elapsed_time = time.time() - start_time
+        start_time = time.time()
+        if not paused:
+            updateSim(dt)
+            ittr += 1
+            globalTime += dt
+            for agent in agents:
+                if not agent[-1]:
+                    trajectories.append([agent[0], agent[1], agent[2][0], agent[2][1], agent[3][0], agent[3][1], agent[6], globalTime])
+
+        drawWorld()
+        if step == True:
+            step = False
+            paused = True
+
+        win.title('Snake')
+        win.after(framedelay,lambda: drawFrame(dt))
+
+world_xmin, world_xmax, world_ymin, world_ymax = readScenario(scenarioFile)
+world_width = world_xmax - world_xmin
+world_height = world_ymax - world_ymin
+world_scale = pixelsize/world_width
+
+# set the visualizer
+win = Tk()
+# keyboard interaction
+win.bind("<space>",on_key_press)
+win.bind("s",on_key_press)
+win.bind("<Escape>",on_key_press)
+win.bind("v",on_key_press)
+# the drawing canvas
+canvas = Canvas(win, width=pixelsize, height=pixelsize*world_height/world_width, background="#666")
+canvas.pack()
+initWorld(canvas)
+start_time = time.time()
+# the main loop of the program
+win.after(framedelay, lambda: drawFrame(dt))
+mainloop()
+if doExport:
+    header = "id,gid,x,y,v_x,v_y,radius,time"
+    exportFile = scenarioFile.split('.csv')[0] + "_"+str(epsilon)+"_sim.csv"
+    np.savetxt(exportFile, trajectories, delimiter=",", fmt='%d,%d,%f,%f,%f,%f,%f,%f', header=header, comments='')
