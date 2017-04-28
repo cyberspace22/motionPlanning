@@ -3,6 +3,7 @@ from operator import itemgetter
 action = [-1, 0, 1]
 #action  = [0,0,0]
 action_name = ['R', 'F', 'L']
+dir_name = ['U','L','D','R']
 actn = 0
 cost = [1, 1, 1] # corresponding cost values R F L
 orientation = [0, 1, 2, 3] #U L D R
@@ -213,12 +214,12 @@ def compute_plan(grid,start,goal,cost,heuristic):
     y = current[4]
     actn = current[6]
     ori = current[5]
-    plan[x][y] = action_name[actn] #set the action in plan for final node
+    plan[x][y] = dir_name[ori] #set the action in plan for final node
     while not (parent[x][y][ori] == [500,500,500]):
         #print(x,y,ori)
         #actn = data[x][y][6]
         [x,y,ori,actn] = parent[x][y][ori] #set action in plan for all other nodes
-        plan[x][y] = action_name[actn]
+        plan[x][y] = dir_name[ori]
     return plan
 
 def show(p):
