@@ -10,25 +10,15 @@ orientation = [0, 1, 2, 3] #U L D R
 # GRID:
 #     0 = navigable space
 #     1 = unnavigable space
-'''grid = [[1, 1, 1, 0, 0, 0],
-        [1, 1, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0],
-        [1, 1, 1, 0, 1, 1],
-        [1, 1, 1, 0, 1, 1]]'''
 grid = [[0 for x in range(20)] for y in range(20)]
-plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
-'''heuristic = [[2, 3, 4, 5, 6, 7],
-            [1, 2, 3, 4, 5, 6],
-            [0, 1, 2, 3, 4, 5],
-            [1, 2, 3, 4, 5, 6],
-            [2, 3, 4, 5, 6, 7]]'''
 heuristic = [[0 for x in range(20)] for y in range(20)]
 obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
-
+setobs(grid,obs)
+setobs(plan,obs)
 
 start = [4, 3, 2] #[grid row, grid col, direction]
 
-goal = [19, 19] #[grid row, grid col]
+goal = [19, 19] #[grid row, grid col] initial goal
 #heuristic fn
 def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
@@ -218,7 +208,6 @@ def compute_plan(grid,start,goal,cost,heuristic):
 def show(p):
     for i in range(len(p)):
         print p[i]
+plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
 buildheuristics(grid,goal,heuristic)
-setobs(grid,obs)
-setobs(plan,obs)
 show(compute_plan(grid, start, goal, cost,heuristic))
