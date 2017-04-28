@@ -10,14 +10,7 @@ orientation = [0, 1, 2, 3] #U L D R
 # GRID:
 #     0 = navigable space
 #     1 = unnavigable space
-grid = [[0 for x in range(20)] for y in range(20)]
-heuristic = [[0 for x in range(20)] for y in range(20)]
-obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
-gstart = [6,16]
-start = [4, 3, 2] #[grid row, grid col, direction]
 
-goal = [6, 18] #[grid row, grid col] initial goal
-#heuristic fn
 def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
         for c in range(len(heuristic[0])):
@@ -29,7 +22,7 @@ def updategheuristic(gstart,heuristic):
             try:
                 if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
                     continue
-                heuristic[gstart[0]+i][gstart[1]+j] += 10
+                heuristic[gstart[0]+i][gstart[1]+j] += 100
                 print(i,j)
             except IndexError:
                 continue
@@ -145,7 +138,7 @@ def movecost(curr,coord):
     coord[2] = orient
     coord[3] = actn
     return mcost
-def compute_plan(grid,start,goal,cost,heuristic):
+def compute_plan(grid,start,goal,cost,heuristic,plan):
     parent = [[[[0 for d in range(3)] for t in range(4)] for row in range(len(grid[0]))] for col in range(len(grid))]
     clsd = [] #variable for the closed spaces
     x = start[0]
@@ -220,11 +213,25 @@ def compute_plan(grid,start,goal,cost,heuristic):
 def show(p):
     for i in range(len(p)):
         print p[i]
-plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
-setobs(grid,obs)
-setobs(plan,obs)
-buildheuristics(grid,goal,heuristic)
-updategheuristic(gstart,heuristic)
-plan = compute_plan(grid, start, goal, cost,heuristic)
-for pr in range(len(plan)):
-    print(plan[pr])
+
+def astar(start,grid,obs,goal):
+    plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
+    setobs(grid,obs)
+    setobs(plan,obs)
+    buildheuristics(grid,goal,heuristic)
+    updategheuristic(gstart,heuristic)
+    plan = compute_plan(grid, start, goal, cost,heuristic,plan)
+    for pr in range(len(plan)):
+        print(plan[pr])
+    return plan
+
+if __name__== "__main__":
+    grid = [[0 for x in range(20)] for y in range(20)]
+    heuristic = [[0 for x in range(20)] for y in range(20)]
+    obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
+    gstart = [6,16]
+    start = [4, 3, 2] #[grid row, grid col, direction]
+
+    goal = [6, 18] #[grid row, grid col] initial goal
+    #heuristic fn
+    p = astar(start,grid,obs,goal)
