@@ -215,6 +215,17 @@ def show(p):
         print p[i]
 
 def astar(start,grid,obs,goal):
+    '''
+    read these before sending data
+
+    start = [row,col,direction] (direction = 0,1,2,3 as can be seen in the starting lines of the code)
+    grid = NxN 2D list with 0 = accessible space and 1 = inaccessible space
+    obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
+    goal = [row,col]
+
+    returns plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
+    ...actions
+    '''
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     setobs(grid,obs)
     setobs(plan,obs)
