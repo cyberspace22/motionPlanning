@@ -45,7 +45,15 @@ def setobs(grid,obs):
         y = o[1]
         for r in range(o[2]):
             for c in range(o[3]):
-                grid[x+r][y+c] = 1
+                grid[x+r][y+c] = str(1)
+                '''
+                i8291=0
+                if(i8291<1):
+                    print('king1')
+                    print(plan[x][y])
+                i8291=i8291+1
+                '''
+                
 
 def neighbours(curr,neigh):
     r = curr[3]
