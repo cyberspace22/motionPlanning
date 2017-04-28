@@ -217,7 +217,7 @@ def show(p):
 def astar(start,grid,obs,goal):
     '''
     read this before sending data
-
+    after you have imported this code, call the astar function with the following parameters
     start = [row,col,direction] (direction = 0,1,2,3 as can be seen in the starting lines of the code)
     grid = NxN 2D list with 0 = accessible space and 1 = inaccessible space
     obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
