@@ -1,7 +1,7 @@
 print('A star')
-goal = [2, 0]
+goal = [13,13]
 goal_Theta=90
-pos=[4,3]
+pos=[0,0]
 OptimumPath=[]
 OptimumPath.append(pos)
 '''grid = [[1, 1, 1, 0, 0, 0],

@@ -162,7 +162,7 @@ def updateSim(dt):
     for i in range(len(agents)):
         agent = agents[i]
         if not agent[-1]:
-            agent[5]=np.array([9,1])
+        #    agent[5]=np.array([9,1])
             F[i] += (agent[4]-agent[3])/xi
 
     reachedGoals = True
