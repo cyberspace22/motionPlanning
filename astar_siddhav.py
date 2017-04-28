@@ -28,8 +28,16 @@ def updategheuristic(gstart,heuristic):
             except IndexError:
                 continue
     heuristic[gstart[0]][gstart[1]] += 50
-    for i in range(len(heuristic)):
-        print heuristic[i]
+    for i in heuristic:
+        temp=[]
+        for anyi in i:
+            #print "%02d" % (1,)
+            #print "%02d" %  (anyi)
+            temp.append("%02d" %  (anyi))
+        #print heuristic[i]
+        print(temp)
+        #print('')
+        pass
 
 def setobs(grid,obs):
     for o in obs:
