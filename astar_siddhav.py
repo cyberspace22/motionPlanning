@@ -27,7 +27,7 @@ def updategheuristic(gstart,heuristic):
     for i in range(-3,3,1):
         for j in range(-3,3,1):
             try:
-                heuristic[gstart[0]+i][gstart[1]+j] += 500-abs((i+j)/2)
+                heuristic[gstart[0]+i][gstart[1]+j] += 500
                 print(gstart[0]+i)
             except IndexError:
                 continue
