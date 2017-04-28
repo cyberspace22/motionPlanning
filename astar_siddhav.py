@@ -13,7 +13,7 @@ orientation = [0, 1, 2, 3] #U L D R
 grid = [[0 for x in range(20)] for y in range(20)]
 heuristic = [[0 for x in range(20)] for y in range(20)]
 obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
-gstart = [0,19]
+gstart = [6,16]
 start = [4, 3, 2] #[grid row, grid col, direction]
 
 goal = [19, 19] #[grid row, grid col] initial goal
@@ -24,15 +24,17 @@ def buildheuristics(grid,goal,heuristic):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
 
 def updategheuristic(gstart,heuristic):
-    for i in range(-3,3,1):
-        for j in range(-3,3,1):
+    for i in range(-3,3):
+        for j in range(-3,3):
             try:
-                heuristic[gstart[0]+i][gstart[1]+j] += 500
-                print(gstart[0]+i)
+                if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
+                    continue
+                heuristic[gstart[0]+i][gstart[1]+j] += 100
+                #print(gstart[0]+i)
             except IndexError:
                 continue
-    #or i in range(len(heuristic)):
-    #    print heuristic[i]
+    for i in range(len(heuristic)):
+        print heuristic[i]
 
 def setobs(grid,obs):
     for o in obs:
