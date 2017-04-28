@@ -13,9 +13,7 @@ orientation = [0, 1, 2, 3] #U L D R
 grid = [[0 for x in range(20)] for y in range(20)]
 heuristic = [[0 for x in range(20)] for y in range(20)]
 obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
-setobs(grid,obs)
-setobs(plan,obs)
-
+gstart = [0,19]
 start = [4, 3, 2] #[grid row, grid col, direction]
 
 goal = [19, 19] #[grid row, grid col] initial goal
@@ -24,6 +22,17 @@ def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
         for c in range(len(heuristic[0])):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
+
+def updategheuristic(gstart,heuristic):
+    for i in range(-3,3,1):
+        for j in range(-3,3,1):
+            try:
+                heuristic[gstart[0]+i][gstart[1]+j] += 500-abs((i+j)/2)
+                print(gstart[0]+i)
+            except IndexError:
+                continue
+    #or i in range(len(heuristic)):
+    #    print heuristic[i]
 
 def setobs(grid,obs):
     for o in obs:
@@ -209,5 +218,10 @@ def show(p):
     for i in range(len(p)):
         print p[i]
 plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
+setobs(grid,obs)
+setobs(plan,obs)
 buildheuristics(grid,goal,heuristic)
-show(compute_plan(grid, start, goal, cost,heuristic))
+updategheuristic(gstart,heuristic)
+plan = compute_plan(grid, start, goal, cost,heuristic)
+for pr in range(len(plan)):
+    print(plan[pr])
