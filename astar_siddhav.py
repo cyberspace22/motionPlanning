@@ -1,4 +1,5 @@
 from operator import itemgetter
+print('hii')
 # The car can perform 3 actions: 0: right turn, 1: no turn, 2: left turn
 action = [-1, 0, 1]
 #action  = [0,0,0]
