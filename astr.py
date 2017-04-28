@@ -1,5 +1,9 @@
 print('A star')
+<<<<<<< HEAD
 goal = [13,13]
+=======
+goal = [20, 20]
+>>>>>>> cac0bde5c987aea7bbfa2017b4b730d28869b30f
 goal_Theta=90
 pos=[0,0]
 OptimumPath=[]

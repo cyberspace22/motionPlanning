@@ -21,7 +21,7 @@ gvLines = []
 #Initalize parameters to run a simulation
 # the simulation time step
 dt = 0.05
-scenarioFile='snake.csv'
+scenarioFile='snake_agent.csv'
 # export the simulation?
 doExport = True
 # the simulated agents
@@ -46,8 +46,77 @@ num = 0
 angle=30
 close=1
 
+grid = [[0 for x in range(20)] for y in range(20)]
+obs = [[5,5,2,2]] #[x,y,r,c]
+#setobs(grid,obs)
+initial_theta=0
+CurCost=0;
+ #print(str(grid[:][2]))
+def setobs(grid,obs):
+    for o in obs:
+        x = o[0]
+        y = o[1]
+        for r in range(o[2]):
+            for c in range(o[3]):
+                grid[x+r][y+c] = 1
+setobs(grid,obs)
+nmap = np.array(grid)
+
+def heuristic(a, b):
+    return (b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2
+
+def astar(array, start, goal):
+
+    neighbors = [(0,1),(0,-1),(1,0),(-1,0),(1,1),(1,-1),(-1,1),(-1,-1)]
+
+    close_set = set()
+    came_from = {}
+    gscore = {start:0}
+    fscore = {start:heuristic(start, goal)}
+    oheap = []
+
+    heappush(oheap, (fscore[start], start))
+
+    while oheap:
+
+        current = heappop(oheap)[1]
+
+        if current == goal:
+            data = []
+            while current in came_from:
+                data.append(current)
+                current = came_from[current]
+            return data
+
+        close_set.add(current)
+        for i, j in neighbors:
+            neighbor = current[0] + i, current[1] + j
+            tentative_g_score = gscore[current] + heuristic(current, neighbor)
+            if 0 <= neighbor[0] < array.shape[0]:
+                if 0 <= neighbor[1] < array.shape[1]:
+                    if array[neighbor[0]][neighbor[1]] == 1:
+                        continue
+                else:
+                    # array bound y walls
+                    continue
+            else:
+                # array bound x walls
+                continue
+
+            if neighbor in close_set and tentative_g_score >= gscore.get(neighbor, 0):
+                continue
+
+            if  tentative_g_score < gscore.get(neighbor, 0) or neighbor not in [i[1]for i in oheap]:
+                came_from[neighbor] = current
+                gscore[neighbor] = tentative_g_score
+                fscore[neighbor] = tentative_g_score + heuristic(neighbor, goal)
+                heappush(oheap, (fscore[neighbor], neighbor))
+
+    return False
+
 
 def readScenario(fileName, scalex=1., scaley=1.):
+
     if fileName=='allway_agents.csv':
         scalex = 0.75
         scaley = 2
@@ -151,6 +220,13 @@ def on_key_press(event):
     if event.keysym == "Escape":
         QUIT = True
 
+def nextpoint(currpos,goalpos):
+    #print(grid)
+    #print(str(grid[:][2]))
+    path = astar(nmap, currpos, goalpos)
+    path = list (reversed(path))
+    return (path[0])
+
 def updateSim(dt):
     global reachedGoals
 
@@ -162,8 +238,11 @@ def updateSim(dt):
     for i in range(len(agents)):
         agent = agents[i]
         if not agent[-1]:
-        #    agent[5]=np.array([9,1])
-            F[i] += (agent[4]-agent[3])/xi
+            nextt=nextpoint(agent[2],agent[5])
+            gvel = nextt-pos # the goal velocity of the agent
+            gvel = gvel/(sqrt(gvel.dot(gvel)))*agent[7]
+            F[i] += (gvel-agent[3])/xi
+
 
     reachedGoals = True
     for i in range(len(agents)):
@@ -228,6 +307,8 @@ canvas = Canvas(win, width=pixelsize, height=pixelsize*world_height/world_width,
 canvas.pack()
 initWorld(canvas)
 start_time = time.time()
+
+
 # the main loop of the program
 win.after(framedelay, lambda: drawFrame(dt))
 mainloop()
