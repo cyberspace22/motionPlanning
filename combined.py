@@ -225,6 +225,7 @@ def nextpoint(currpos,goalpos):
     #print(str(grid[:][2]))
     path = astar(nmap, currpos, goalpos)
     path = list (reversed(path))
+    print path
     return (path[0])
 
 def updateSim(dt):
@@ -314,5 +315,5 @@ win.after(framedelay, lambda: drawFrame(dt))
 mainloop()
 if doExport:
     header = "id,gid,x,y,v_x,v_y,radius,time"
-    exportFile = scenarioFile.split('.csv')[0] + "_"+str(epsilon)+"_sim.csv"
+    exportFile = scenarioFile.split('.csv')[0] +"_sim.csv"
     np.savetxt(exportFile, trajectories, delimiter=",", fmt='%d,%d,%f,%f,%f,%f,%f,%f', header=header, comments='')
