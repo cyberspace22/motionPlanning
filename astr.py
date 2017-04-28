@@ -1,5 +1,5 @@
 print('A star')
-goal = [2, 0]
+goal = [20, 20]
 goal_Theta=90
 pos=[4,3]
 OptimumPath=[]

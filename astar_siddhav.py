@@ -32,6 +32,7 @@ def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
         for c in range(len(heuristic[0])):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
+#function to compute heuristic map
 buildheuristics(grid,goal,heuristic)
 print(heuristic)
 
