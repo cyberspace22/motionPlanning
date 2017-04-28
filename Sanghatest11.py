@@ -28,13 +28,13 @@ obj_obs1.y2=00
 
 
 
-def backEndGrid():
+def backEndGrid(ab1):
     print('grid creation start here')
     grid=[]
     a12=[]
-    for a in range(0,10):
+    for a in range(0,ab1):
         a12.append(0)
-    for b in range(0,10):
+    for b in range(0,ab1):
         grid.append(a12)
 
     l=len(grid)
@@ -92,6 +92,7 @@ def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
     yLL=int(p1[1]/100)+1
     yo=yLL
     print('the frist rect x,y = '+str(xLL)+' , '+str(yLL))
+
 
     for any1 in range(0,xp):
         print(xLL)
