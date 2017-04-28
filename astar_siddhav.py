@@ -4,7 +4,7 @@ action = [-1, 0, 1]
 #action  = [0,0,0]
 action_name = ['R', 'F', 'L']
 actn = 0
-cost = [1, 1, 10] # corresponding cost values R F L
+cost = [1, 1, 1] # corresponding cost values R F L
 orientation = [0, 1, 2, 3] #U L D R
 # GRID:
 #     0 = navigable space
@@ -15,16 +15,17 @@ orientation = [0, 1, 2, 3] #U L D R
         [1, 1, 1, 0, 1, 1],
         [1, 1, 1, 0, 1, 1]]'''
 grid = [[0 for x in range(20)] for y in range(20)]
+plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
 '''heuristic = [[2, 3, 4, 5, 6, 7],
             [1, 2, 3, 4, 5, 6],
             [0, 1, 2, 3, 4, 5],
             [1, 2, 3, 4, 5, 6],
             [2, 3, 4, 5, 6, 7]]'''
 heuristic = [[0 for x in range(20)] for y in range(20)]
-obs = [[2,2,2,3],[7,9,3,2]] #[x,y,r,c]
+obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3]] #[x,y,r,c]
 
 
-start = [4, 3, 0] #[grid row, grid col, direction]
+start = [4, 3, 2] #[grid row, grid col, direction]
 
 goal = [19, 19] #[grid row, grid col]
 #heuristic fn
@@ -34,7 +35,7 @@ def buildheuristics(grid,goal,heuristic):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
 #function to compute heuristic map
 buildheuristics(grid,goal,heuristic)
-#print(heuristic)
+print(heuristic)
 
 def setobs(grid,obs):
     for o in obs:
@@ -45,6 +46,7 @@ def setobs(grid,obs):
                 grid[x+r][y+c] = 1
     #print(grid)
 setobs(grid,obs)
+setobs(plan,obs)
 #print(grid)
 
 def neighbours(curr,neigh):
@@ -149,7 +151,6 @@ def movecost(curr,coord):
     return mcost
 def compute_plan(grid,start,goal,cost,heuristic):
     parent = [[[[0 for d in range(3)] for t in range(4)] for row in range(len(grid[0]))] for col in range(len(grid))]
-    plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     clsd = [] #variable for the closed spaces
     x = start[0]
     y = start[1]
