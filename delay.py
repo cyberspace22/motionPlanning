@@ -2,21 +2,17 @@ import Tkinter
 import tkMessageBox
 from Sanghatest11 import *
 
-
+initial_position=[0,0]
+goal_position=[10,10]
 print('\n\n')
-gridsize=40
+gridsize=20
 grid=backEndGrid(gridsize)
 print(grid)
-A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100]]
-
+A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600]]
 rect=[]
 list_line=[]
-
 #e is scalling constant for everything
 e=25
-
-
-
 obstacle_list=[]
 class obs_cord():
     #diagonally opposite 2 points are sufficicent, nothing else needed
@@ -25,27 +21,18 @@ class obs_cord():
     x2=0
     y2=0
     pass
-
 class Horizontal_lines:
     a=10
     b=10
     c=400
     d=10
-
 class Vertical_lines:
     a=10
     b=10
     c=10
     d=400
-
-
-
-
 grid_lines=len(grid)+1
 #so these are diagonally opposite points corodinates for the obsstacles rectangle
-
-
-
 obj_obs11=obs_cord()
 obj_obs11.x1=300
 obj_obs11.y1=400
@@ -82,99 +69,20 @@ for xs in range (0,l):
     objs[xs].b=0+e*xs
     objs[xs].c=e*gridsize
     objs[xs].d=0+e*xs
-
 objs_h = [Vertical_lines() for i in range(grid_lines)]
-
-
-
-
 l1=len(objs_h)
 for xs1 in range (0,l1):
     objs_h[xs1].a=0+e*xs1
     objs_h[xs1].b=0
     objs_h[xs1].c=0+e*xs1
     objs_h[xs1].d=e*gridsize
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-def backEndGrid():
-    print('grid creation start here')
-    grid=[]
-    a12=[]
-    for a in range(0,10):
-        a12.append(0)
-    for b in range(0,10):
-        grid.append(a12)
-
-    l=len(grid)
-    for a in range (0,l):
-        print(grid[a])
-    return grid
-
-grid=backEndGrid()
-print('\n\n\n\n')
-grid[0][0]=10
-l=len(grid)
-for a in range (0,l):
-    print(grid[a])
-
-'''
-
-top = Tkinter.Tk()
-
-coordinate=0,0,e,e
-C = Tkinter.Canvas(top, bg="gray", height=1200, width =1200)
-arc=C.create_arc(coordinate,start=30,extent=300,fill="red")
-angle=30
-close =1
-flag1=True
-def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1):
-
-    if coord[0]>300:
-        flag12=False
-        return
-    arc = C.create_arc(coord,outline="gray",start=angle,extent=(360-2*angle),fill="gray")
-    coord=coord[0]+1,coord[1],coord[2]+1,coord[3]
-    if angle >0 and close ==1:
-        angle=angle-1
-        if angle ==0:
-            close =0
-    elif angle<30 and close==0:
-        angle =angle+1
-        if angle ==30:
-            close=1
-    arc = C.create_arc(coord,start=angle,extent=360-2*angle,fill="red")
-    top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1))
-    createGridVisible(l1,objs1,objs_h1)
-    createVisibleObstacles(grid1)
-
-
-
     #obs(coord)
-
 #here i will try showing a grid which will guide my testing and initial coding
-
-
-
-
 def createGridVisible(l,objs,objs_h):
     in2=0
     for in2 in range(0,l):
         id = C.create_line(objs[in2].a,objs[in2].b,objs[in2].c,objs[in2].d,fill="red")
         id2 = C.create_line(objs_h[in2].a,objs_h[in2].b,objs_h[in2].c,objs_h[in2].d,fill="red")
-
     pass
 
 def createVisibleObstacles(grid):
@@ -189,20 +97,11 @@ def createVisibleObstacles(grid):
                 #n1,m1,n2,m2 is what corodinates are to send for obs
                 coordinate2=m*e,n*e,(m+1)*e,(n+1)*e
                 id = C.create_rectangle(coordinate2,fill="#000fff000" )
-
-
-
-
             m=m+1
-
         n=n+1
     #d = C.create_rectangle(coordinate2,fill="#000fff000" )
     pass
 # so we need functions that can move along 2 perpendicular axes.
-
-
-
-
 #only question remained is why al obstacles are not shown from the obstacle list
 
 for any21 in obstacle_list:
@@ -216,20 +115,86 @@ for any21 in obstacle_list:
     grid=update_grid_with_obs(grid,rect)
     #now the grid is up to date, it is allready an array
     print(grid)
-
 # we have final grid enviornment with all posible obstacles
-
-
-
-
-
-
 #here we have data from backend and graphics
 #this is the place where backend affects front ended
 #important note:- m up and down n right and left= mxn grid
+def motion_snake():
+    pass
+
+top = Tkinter.Tk()
+counter=0
+coordinate=initial_position[0],initial_position[1],e,e
+C = Tkinter.Canvas(top, bg="gray", height=1200, width =1200)
+arc=C.create_arc(coordinate,start=30,extent=300,fill="red")
+angle=30
+close =1
+flag1=True
+
+def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter):
+
+    motion_input=[[0,0],[50,0],[50,50],[100,50]]
+    p2=motion_input[counter+1]
+    p1=motion_input[counter]
+    print(p2)
+    print(p1)
+    p3=[0,0]
+    p3[0]=p2[0]-p1[0]
+    p3[1]=p2[1]-p1[1]
+    print(p3)
+    if(p3[0]==0):
+        a=0
+        b=1
+        c=0
+        d=1
+        #ymotion
+        pass
+    if(p3[1]==0):
+        a=1
+        b=0
+        c=1
+        d=0
+        #xmotion
+        pass
+
+    if coord[0]>25:
+        print('\n\n\n\n\n\n\n\XXXXX TUREJBJAHBKFHADBHJASBFKJADSFKJANn\n\n\n\n\n\n\n')
+        #flag12=False
+        print('current x coordinate  :  '+str(coord[0]))
+        counter=counter+1
+        #return
+    if coord[1]>25:
+        #flag12=False
+        print('\n\n\n\n\n\n\n\YYYY TUREJBJAHBKFHADBHJASBFKJADSFKJANn\n\n\n\n\n\n\n')
+        print('current x coordinate  :  '+str(coord[1]))
+        counter=counter+1
+        #return
+    #if()
+
+    arc = C.create_arc(coord,outline="gray",start=angle,extent=(360-2*angle),fill="gray")
+
+    coord=coord[0]+1*a,coord[1]+1*b,coord[2]+1*c,coord[3]+1*d
+    if angle >0 and close ==1:
+        angle=angle-1
+        if angle ==0:
+            close =0
+    elif angle<30 and close==0:
+        angle =angle+1
+        if angle ==30:
+            close=1
+    arc = C.create_arc(coord,start=angle,extent=360-2*angle,fill="red")
+    top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter))
+    createGridVisible(l1,objs1,objs_h1)
+    createVisibleObstacles(grid1)
+
 
 C.pack()
+#snake(coordinate,angle,close,flag1,l,objs,objs_h,grid)
 # the main loop of the program
-top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid))
-
+top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter))
+'''
+while(flag1):
+    #snake(coordinate,angle,close,flag1,l,objs,objs_h,grid)
+    pass
+'''
 top.mainloop()
