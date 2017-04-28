@@ -4,7 +4,8 @@ from Sanghatest11 import *
 
 
 print('\n\n')
-grid=backEndGrid()
+gridsize=40
+grid=backEndGrid(gridsize)
 print(grid)
 A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100]]
 
@@ -13,6 +14,7 @@ list_line=[]
 
 #e is scalling constant for everything
 e=25
+
 
 
 obstacle_list=[]
@@ -78,7 +80,7 @@ l=len(objs)
 for xs in range (0,l):
     objs[xs].a=0
     objs[xs].b=0+e*xs
-    objs[xs].c=e*20
+    objs[xs].c=e*gridsize
     objs[xs].d=0+e*xs
 
 objs_h = [Vertical_lines() for i in range(grid_lines)]
@@ -91,7 +93,7 @@ for xs1 in range (0,l1):
     objs_h[xs1].a=0+e*xs1
     objs_h[xs1].b=0
     objs_h[xs1].c=0+e*xs1
-    objs_h[xs1].d=e*20
+    objs_h[xs1].d=e*gridsize
 
 
 
