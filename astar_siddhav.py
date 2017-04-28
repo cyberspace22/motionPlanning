@@ -16,7 +16,7 @@ obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
 gstart = [6,16]
 start = [4, 3, 2] #[grid row, grid col, direction]
 
-goal = [19, 19] #[grid row, grid col] initial goal
+goal = [6, 18] #[grid row, grid col] initial goal
 #heuristic fn
 def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
@@ -24,15 +24,16 @@ def buildheuristics(grid,goal,heuristic):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
 
 def updategheuristic(gstart,heuristic):
-    for i in range(-3,3):
-        for j in range(-3,3):
+    for i in range(-3,4):
+        for j in range(-3,4):
             try:
                 if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
                     continue
-                heuristic[gstart[0]+i][gstart[1]+j] += 100
-                #print(gstart[0]+i)
+                heuristic[gstart[0]+i][gstart[1]+j] += 10
+                print(i,j)
             except IndexError:
                 continue
+    heuristic[gstart[0]][gstart[1]] += 50
     for i in range(len(heuristic)):
         print heuristic[i]
 
