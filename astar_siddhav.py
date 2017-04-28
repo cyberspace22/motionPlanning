@@ -33,7 +33,7 @@ def updategheuristic(gstart,heuristic):
         for anyi in i:
             #print "%02d" % (1,)
             #print "%02d" %  (anyi)
-            temp.append("%02d" %  (anyi))
+            temp.append("%03d" %  (anyi))
         #print heuristic[i]
         print(temp)
         #print('')
