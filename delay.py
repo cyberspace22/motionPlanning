@@ -3,13 +3,17 @@ import tkMessageBox
 from Sanghatest11 import *
 
 
-A4x4=[[300,400,100,0],[100,0,400,300],[0,200,400,100]]
+print('\n\n')
+grid=backEndGrid()
+print(grid)
+A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100]]
 
 rect=[]
 list_line=[]
 
-e=50
-grid_lines=11
+#e is scalling constant for everything
+e=25
+
 
 obstacle_list=[]
 class obs_cord():
@@ -32,7 +36,13 @@ class Vertical_lines:
     c=10
     d=400
 
+
+
+
+grid_lines=len(grid)+1
 #so these are diagonally opposite points corodinates for the obsstacles rectangle
+
+
 
 obj_obs11=obs_cord()
 obj_obs11.x1=300
@@ -68,7 +78,7 @@ l=len(objs)
 for xs in range (0,l):
     objs[xs].a=0
     objs[xs].b=0+e*xs
-    objs[xs].c=500
+    objs[xs].c=e*20
     objs[xs].d=0+e*xs
 
 objs_h = [Vertical_lines() for i in range(grid_lines)]
@@ -81,7 +91,7 @@ for xs1 in range (0,l1):
     objs_h[xs1].a=0+e*xs1
     objs_h[xs1].b=0
     objs_h[xs1].c=0+e*xs1
-    objs_h[xs1].d=500
+    objs_h[xs1].d=e*20
 
 
 
@@ -122,7 +132,7 @@ for a in range (0,l):
 
 top = Tkinter.Tk()
 
-coordinate=0,0,50,50
+coordinate=0,0,e,e
 C = Tkinter.Canvas(top, bg="gray", height=1200, width =1200)
 arc=C.create_arc(coordinate,start=30,extent=300,fill="red")
 angle=30
@@ -175,7 +185,7 @@ def createVisibleObstacles(grid):
             if(grid[n][m]==1):
                 print('conditions satisfied')
                 #n1,m1,n2,m2 is what corodinates are to send for obs
-                coordinate2=m*50,n*50,(m+1)*50,(n+1)*50
+                coordinate2=m*e,n*e,(m+1)*e,(n+1)*e
                 id = C.create_rectangle(coordinate2,fill="#000fff000" )
 
 
@@ -189,9 +199,7 @@ def createVisibleObstacles(grid):
 # so we need functions that can move along 2 perpendicular axes.
 
 
-print('\n\n')
-grid=backEndGrid()
-print(grid)
+
 
 #only question remained is why al obstacles are not shown from the obstacle list
 
