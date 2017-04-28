@@ -36,7 +36,7 @@ def buildheuristics(grid,goal,heuristic):
 buildheuristics(grid,goal,heuristic)
 print(heuristic)
 
-'''def setobs(grid,obs):
+def setobs(grid,obs):
     for o in obs:
         x = o[0]
         y = o[1]
@@ -45,7 +45,8 @@ print(heuristic)
                 grid[x+r][y+c] = 1
     print(grid)
 setobs(grid,obs)
-print(grid)'''
+print(grid)
+
 def neighbours(curr,neigh):
     r = curr[3]
     c = curr[4]
