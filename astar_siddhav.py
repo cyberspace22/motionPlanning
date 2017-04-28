@@ -22,7 +22,7 @@ plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
             [1, 2, 3, 4, 5, 6],
             [2, 3, 4, 5, 6, 7]]'''
 heuristic = [[0 for x in range(20)] for y in range(20)]
-obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3]] #[x,y,r,c]
+obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
 
 
 start = [4, 3, 2] #[grid row, grid col, direction]
