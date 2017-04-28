@@ -34,9 +34,6 @@ def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
         for c in range(len(heuristic[0])):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
-#function to compute heuristic map
-buildheuristics(grid,goal,heuristic)
-print(heuristic)
 
 def setobs(grid,obs):
     for o in obs:
@@ -45,10 +42,6 @@ def setobs(grid,obs):
         for r in range(o[2]):
             for c in range(o[3]):
                 grid[x+r][y+c] = 1
-    #print(grid)
-setobs(grid,obs)
-setobs(plan,obs)
-#print(grid)
 
 def neighbours(curr,neigh):
     r = curr[3]
@@ -225,5 +218,7 @@ def compute_plan(grid,start,goal,cost,heuristic):
 def show(p):
     for i in range(len(p)):
         print p[i]
-
+buildheuristics(grid,goal,heuristic)
+setobs(grid,obs)
+setobs(plan,obs)
 show(compute_plan(grid, start, goal, cost,heuristic))
