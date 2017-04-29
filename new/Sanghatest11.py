@@ -1,32 +1,5 @@
 import numpy as np
 
-
-'''
-p1=[0,0]
-p2=[0,0]
-
-
-Sangha
-rect=[]
-
-class obs_cord():
-    #diagonally opposite 2 points are sufficicent, nothing else needed
-    x1=0
-    y1=0
-    x2=0
-    y2=0
-    pass
-
-
-
-obj_obs1=obs_cord()
-obj_obs1.x1=300
-obj_obs1.y1=400
-obj_obs1.x2=100
-obj_obs1.y2=00
-'''
-
-
 #last work
 def backEndGrid(ab1):
     print('grid creation start here')
@@ -43,10 +16,6 @@ def backEndGrid(ab1):
     grid=np.array(grid)
     return grid
 
-
-
-
-
 def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
     print('started Obstacle_from_pixel_to_grid(obj_obs1,rect1)')
     p1=[0,0]
@@ -61,23 +30,23 @@ def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
 
 
     if(obj_obs1.x1<obj_obs1.x2):
-        print('point worked1')
+        #print('point worked1')
         p1[0]=obj_obs1.x1
         p2[0]=obj_obs1.x2
 
     if (obj_obs1.x1>obj_obs1.x2):
-        print('point worked2')
+        #print('point worked2')
         p1[0]=obj_obs1.x2
         p2[0]=obj_obs1.x1
 
 
     if(obj_obs1.y1<obj_obs1.y2):
-        print('point worked3')
+        #print('point worked3')
         p1[1]=obj_obs1.y1
         p2[1]=obj_obs1.y2
 
     if(obj_obs1.y1>obj_obs1.y2):
-        print('point worked4')
+        #print('point worked4')
         p1[1]=obj_obs1.y2
         p2[1]=obj_obs1.y1
 
@@ -85,16 +54,16 @@ def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
     a1231=1
     xp=int(int(p2[0]-p1[0])/100*a1231)
     yp=int(int(p2[1]-p1[1])/100*a1231)
-    print('x pieces and y pieces')
-    print(xp)
-    print(yp)
+    #print('x pieces and y pieces')
+    #print(xp)
+    #print(yp)
 
     # we need keep y const and increase x 3 times and orginal x
     xLL=int(p1[0]/100*a1231)
     yLL=int(p1[1]/100*a1231)
 
     yo=yLL
-    print('(xLL,yLL) first rect = '+str(xLL)+' , '+str(yLL))
+    #print('(xLL,yLL) first rect = '+str(xLL)+' , '+str(yLL))
 
 
     for any1 in range(0,xp):
@@ -108,7 +77,7 @@ def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
         yLL=yo
         xLL=xLL+1
 
-    #print(rect1)
+    print(rect1)
     return rect1
 
 
@@ -123,17 +92,4 @@ def update_grid_with_obs(grid1,rects1):
 
 
 
-'''
-print('\n\n')
-grid=backEndGrid()
-print(grid)
 
-print('\n\n')
-rect=Obstacle_from_pixel_to_grid(obj_obs1,rect)
-print(rect)
-
-print('\n\n')
-grid=update_grid_with_obs(grid,rect)
-
-print(grid)
-'''
