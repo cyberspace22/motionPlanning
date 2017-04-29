@@ -8,11 +8,11 @@ gstart = [6,16] #there is a function to calculate this in the astar_siddhav.py c
 #currently only a set value is  being used for ghost. Its position can also  be passed as a parameter in the function
 start = [4, 3, 2] #[grid row, grid col, direction]
 goal = [6, 18]
-points,plan = astar(start,grid,obs,goal)
+'''points,plan = astar(start,grid,goal)
 print("Printing from test file")
 for pr in range(len(plan)):
     print(plan[pr])
-print(points)
+print(points)'''
 #adding code for ghost
 #may be moved to the master function
 def dotp(x,y):

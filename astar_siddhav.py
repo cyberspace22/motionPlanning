@@ -235,7 +235,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
 #        print p[i]
 #    print(points)
 
-def astar(start,gr,obs,goal):
+def astarold(start,gr,obs,goal):
     '''
     read this before sending data
     after you have imported this code, call the astar function with the following parameters
@@ -270,13 +270,51 @@ def astar(start,gr,obs,goal):
     the 'points' variable has three values. [row,col,direction]
     '''
 
+def astar(start,gr,goal):
+    '''
+    read this before sending data
+    after you have imported this code, call the astar function with the following parameters
+    start = [row,col,direction] (direction = 0,1,2,3 as can be seen in the starting lines of the code)
+    grid = NxN 2D list with 0 = accessible space and 1 = inaccessible space
+    obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
+    goal = [row,col]
+
+    returns points = [row,col,direction],  plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
+    ...actions
+    '''
+    #start = start
+    gstart = [6,16] #this is set as of now. Can be changed as per input
+    global grid
+    grid = gr
+    rh = len(grid)
+    ch = len(grid[0])
+    heuristic = [[0 for x in range(rh)] for y in range(ch)]
+    plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
+    #setobs(grid,obs)
+    #setobs(plan,obs)
+    buildheuristics(grid,goal,heuristic)
+    updategheuristic(gstart,heuristic)
+    points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
+    '''for i in range(len(heuristic)):
+        print(heuristic[i])'''
+    '''for pr in range(len(plan)):
+        print(plan[pr])
+    print(points)'''
+    return points,plan
+    '''
+    the 'points' variable has three values. [row,col,direction]
+    '''
+
+
+
 if __name__== "__main__":
     grid = [[0 for x in range(20)] for y in range(20)]
     heuristic = [[0 for x in range(20)] for y in range(20)]
     obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
     gstart = [6,16]
     start = [4, 3, 2] #[grid row, grid col, direction]
-
+    #setobs(grid,obs)
+    #setobs(plan,obs)
     goal = [6, 18] #[grid row, grid col] initial goal
     #heuristic fn
-    pts,pln = astar(start,grid,obs,goal)
+    pts,pln = astarold(start,grid,obs,goal)
