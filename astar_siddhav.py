@@ -246,7 +246,7 @@ def astar(start,gr,obs,goal):
     ...actions
     '''
     #start = start
-    gstart = [6,16]
+    gstart = [6,16] #this is set as of now. Can be changed as per input
     global grid
     grid = gr
     heuristic = [[0 for x in range(20)] for y in range(20)]
