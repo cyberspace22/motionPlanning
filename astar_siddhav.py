@@ -36,7 +36,7 @@ def updategheuristic(gstart,heuristic):
         #print heuristic[i]
         #print(temp)
         #print('')
-        pass
+
 
 def setobs(grid,obs):
     for o in obs:
@@ -258,8 +258,8 @@ def astar(start,gr,obs,goal):
     buildheuristics(grid,goal,heuristic)
     updategheuristic(gstart,heuristic)
     points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
-    for i in range(len(heuristic)):
-        print(heuristic[i])
+    '''for i in range(len(heuristic)):
+        print(heuristic[i])'''
     '''for pr in range(len(plan)):
         print(plan[pr])
     print(points)'''
