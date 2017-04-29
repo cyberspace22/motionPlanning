@@ -53,7 +53,6 @@ def setobs(grid,obs):
                 i8291=i8291+1
                 '''
 
-
 def neighbours(curr,neigh):
     r = curr[3]
     c = curr[4]
@@ -246,7 +245,8 @@ def astar(start,gr,obs,goal):
     returns points = [row,col,direction],  plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
     ...actions
     '''
-    gstart = start
+    #start = start
+    gstart = [6,16]
     global grid
     grid = gr
     heuristic = [[0 for x in range(20)] for y in range(20)]
@@ -256,6 +256,8 @@ def astar(start,gr,obs,goal):
     buildheuristics(grid,goal,heuristic)
     updategheuristic(gstart,heuristic)
     points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
+    for i in range(len(heuristic)):
+        print(heuristic[i])
     '''for pr in range(len(plan)):
         print(plan[pr])
     print(points)'''
