@@ -53,7 +53,7 @@ def setobs(grid,obs):
                     print(plan[x][y])
                 i8291=i8291+1
                 '''
-                
+
 
 def neighbours(curr,neigh):
     r = curr[3]
@@ -215,21 +215,25 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
             print("goal reached!")
             break
     #get current data to trace back the path
+    points = []
     x = current[3]
     y = current[4]
     actn = current[6]
     ori = current[5]
+    points.insert(0,[x,y,dir_name[ori]])
     plan[x][y] = dir_name[ori] #set the action in plan for final node
     while not (parent[x][y][ori] == [500,500,500]):
         #print(x,y,ori)
         #actn = data[x][y][6]
         [x,y,ori,actn] = parent[x][y][ori] #set action in plan for all other nodes
         plan[x][y] = dir_name[ori]
-    return plan
+        points.insert(0,[x,y,dir_name[ori]])
+    return points,plan
 
-def show(p):
-    for i in range(len(p)):
-        print p[i]
+#def show(p):
+#    for i in range(len(p)):
+#        print p[i]
+#    print(points)
 
 def astar(start,grid,obs,goal):
     '''
@@ -240,7 +244,7 @@ def astar(start,grid,obs,goal):
     obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
     goal = [row,col]
 
-    returns plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
+    returns points = [row,col,direction], plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
     ...actions
     '''
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
@@ -248,10 +252,14 @@ def astar(start,grid,obs,goal):
     setobs(plan,obs)
     buildheuristics(grid,goal,heuristic)
     updategheuristic(gstart,heuristic)
-    plan = compute_plan(grid, start, goal, cost,heuristic,plan)
+    points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
     for pr in range(len(plan)):
         print(plan[pr])
-    return plan
+    print(points)
+    return points,plan
+    '''
+    the 'points' variable has three values. [row,col,direction]
+    '''
 
 if __name__== "__main__":
     grid = [[0 for x in range(20)] for y in range(20)]
@@ -262,4 +270,4 @@ if __name__== "__main__":
 
     goal = [6, 18] #[grid row, grid col] initial goal
     #heuristic fn
-    p = astar(start,grid,obs,goal)
+    pts,pln = astar(start,grid,obs,goal)
