@@ -214,6 +214,8 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
         if (current[3] == goal[0] and current[4] == goal[1]):
             print("goal reached!")
             break
+        '''if not openvar:
+            print("no path found")'''
     #get current data to trace back the path
     points = []
     x = current[3]

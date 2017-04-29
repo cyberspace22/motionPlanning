@@ -1,4 +1,4 @@
-from astar_siddhav import astar
+from astar_siddhav import astarold
 from math import sqrt
 from math import exp
 grid = [[0 for x in range(20)] for y in range(20)]
@@ -8,11 +8,13 @@ gstart = [6,16] #there is a function to calculate this in the astar_siddhav.py c
 #currently only a set value is  being used for ghost. Its position can also  be passed as a parameter in the function
 start = [4, 3, 2] #[grid row, grid col, direction]
 goal = [6, 18]
-'''points,plan = astar(start,grid,goal)
+'''points,plan = astarold(start,grid,obs,goal)
 print("Printing from test file")
 for pr in range(len(plan)):
     print(plan[pr])
 print(points)'''
+
+
 #adding code for ghost
 #may be moved to the master function
 def dotp(x,y):
@@ -34,3 +36,7 @@ goal = [5,6] #this will be the current position of the snake
 gvel = [goal[0]-pos[0],goal[1]-pos[1]]
 gvel = [gvel[0]/(sqrt(dotp(gvel,gvel)))*prefspeed,gvel[1]/(sqrt(dotp(gvel,gvel)))*prefspeed]
 ghost = [pos,vel,gvel,goal,radius,prefspeed,maxspeed]
+#obstacles =
+
+def updatePos(dt):
+    fg = [ghost[2][0] - ghost[1][0],ghost[2][1] - ghost[1][1]]/0.5
