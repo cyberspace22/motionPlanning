@@ -21,7 +21,7 @@ gvLines = []
 #Initalize parameters to run a simulation
 # the simulation time step
 dt = 0.05
-scenarioFile='snake.csv'
+scenarioFile='snake_agent.csv'
 # export the simulation?
 doExport = True
 # the simulated agents
