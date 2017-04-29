@@ -224,9 +224,12 @@ def nextpoint(currpos,goalpos):
     #print(grid)
     #print(str(grid[:][2]))
     path = astar(nmap, currpos, goalpos)
-    path = list (reversed(path))
-    print path
-    return (path[0])
+    if path != False:
+        path = list (reversed(path))
+        print path
+        return (path[0])
+    else:
+        return 0
 
 def updateSim(dt):
     global reachedGoals
@@ -240,10 +243,12 @@ def updateSim(dt):
         agent = agents[i]
         if not agent[-1]:
             nextt=nextpoint(agent[2],agent[5])
-            gvel = nextt-pos # the goal velocity of the agent
-            gvel = gvel/(sqrt(gvel.dot(gvel)))*agent[7]
-            F[i] += (gvel-agent[3])/xi
-
+            if nextt!=0:
+                gvel = nextt-pos # the goal velocity of the agent
+                gvel = gvel/(sqrt(gvel.dot(gvel)))*agent[7]
+                F[i] += (gvel-agent[3])/xi
+            else:
+                F[i] += (agent[4]-agent[3])/xi
 
     reachedGoals = True
     for i in range(len(agents)):

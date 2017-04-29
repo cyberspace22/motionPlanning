@@ -32,7 +32,7 @@ class Vertical_lines:
     c=10
     d=400
 
-#so these are diagonally opposite points corodinates for the obsstacles rectangle
+#so these are diagonally opposite points corodinates for the obstacles rectangle
 
 obj_obs11=obs_cord()
 obj_obs11.x1=300
@@ -74,26 +74,12 @@ for xs in range (0,l):
 objs_h = [Vertical_lines() for i in range(grid_lines)]
 
 
-
-
 l1=len(objs_h)
 for xs1 in range (0,l1):
     objs_h[xs1].a=0+e*xs1
     objs_h[xs1].b=0
     objs_h[xs1].c=0+e*xs1
     objs_h[xs1].d=500
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 '''
@@ -204,7 +190,7 @@ for any21 in obstacle_list:
     print(rect)
     print('\n\n')
     grid=update_grid_with_obs(grid,rect)
-    #now the grid is up to date, it is allready an array
+    #now the grid is up to date, it is already an array
     print(grid)
 
 # we have final grid enviornment with all posible obstacles
