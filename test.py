@@ -36,7 +36,8 @@ goal = [5,6] #this will be the current position of the snake
 gvel = [goal[0]-pos[0],goal[1]-pos[1]]
 gvel = [gvel[0]/(sqrt(dotp(gvel,gvel)))*prefspeed,gvel[1]/(sqrt(dotp(gvel,gvel)))*prefspeed]
 ghost = [pos,vel,gvel,goal,radius,prefspeed,maxspeed]
-#obstacles =
-
+obstacles = [[5,5],[5,6],[6,5],[6,6]]
+def setobsforce(obstacles):
+    print("hi")
 def updatePos(dt):
     fg = [ghost[2][0] - ghost[1][0],ghost[2][1] - ghost[1][1]]/0.5
