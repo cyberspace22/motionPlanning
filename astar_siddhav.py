@@ -11,7 +11,7 @@ orientation = [0, 1, 2, 3] #U L D R
 # GRID:
 #     0 = navigable space
 #     1 = unnavigable space
-
+global grid
 def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
         for c in range(len(heuristic[0])):
@@ -24,7 +24,6 @@ def updategheuristic(gstart,heuristic):
                 if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
                     continue
                 heuristic[gstart[0]+i][gstart[1]+j] += 100
-                print(i,j)
             except IndexError:
                 continue
     heuristic[gstart[0]][gstart[1]] += 50
@@ -35,7 +34,7 @@ def updategheuristic(gstart,heuristic):
             #print "%02d" %  (anyi)
             temp.append("%03d" %  (anyi))
         #print heuristic[i]
-        print(temp)
+        #print(temp)
         #print('')
         pass
 
@@ -235,7 +234,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
 #        print p[i]
 #    print(points)
 
-def astar(start,grid,obs,goal):
+def astar(start,gr,obs,goal):
     '''
     read this before sending data
     after you have imported this code, call the astar function with the following parameters
@@ -244,18 +243,22 @@ def astar(start,grid,obs,goal):
     obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
     goal = [row,col]
 
-    returns points = [row,col,direction], plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
+    returns points = [row,col,direction],  plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
     ...actions
     '''
+    gstart = start
+    global grid
+    grid = gr
+    heuristic = [[0 for x in range(20)] for y in range(20)]
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     setobs(grid,obs)
     setobs(plan,obs)
     buildheuristics(grid,goal,heuristic)
     updategheuristic(gstart,heuristic)
     points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
-    for pr in range(len(plan)):
+    '''for pr in range(len(plan)):
         print(plan[pr])
-    print(points)
+    print(points)'''
     return points,plan
     '''
     the 'points' variable has three values. [row,col,direction]
