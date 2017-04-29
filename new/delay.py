@@ -146,6 +146,7 @@ def generateApple():
 
 
 top = Tkinter.Tk()
+top.wm_title("Snake_man Vs Ghost")
 counter=0
 coordinate=initial_position[0],initial_position[1],e,e
 C = Tkinter.Canvas(top, bg="gray", height=1200, width =1200)
