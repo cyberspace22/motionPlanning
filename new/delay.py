@@ -14,7 +14,7 @@ rect=[]
 list_line=[]
 obstacle_coord=[]
 snake_coord = []
-snake_size=8
+snake_size=4
 
 #e is length of a square in the grid
 e=25
@@ -137,13 +137,16 @@ for any21 in obstacle_list:
 #yet to complete
 def generateApple():
     x,y=-1,-1
-    while grid[x][y]!=1:
+    while grid[x][y]==1 or (x==-1 and y==-1):
         x= randint(0,gridsize)
         y= randint(0,gridsize)
 
     arc = C.create_oval(x+2,y+2,x+e-2,y+e-2,width=0,fill="black")
     return x,y
 
+
+def regenerateApple():
+    C.itemconfig()
 
 top = Tkinter.Tk()
 counter=0
@@ -189,11 +192,16 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         shut = 90
 
     tail = 1
-    while tail<=snake_s and len(snake_coord)>=tail*5:
+    while tail<=snake_s:
         if tail ==1:
             arc = C.create_arc(snake_coord[-1],outline="gray",start=shut + angle,extent=(360-2*angle),fill="gray")
+            if (len(snake_coord)>=int(e/2)):
+                arc = C.create_oval(snake_coord[-int(e/2)],width=0,fill="gray")
         else:
-            arc = C.create_oval(snake_coord[-(tail*5)],width=0,fill="gray")
+            if (len(snake_coord)>=(tail-1)*int(e)):
+                arc = C.create_oval(snake_coord[-((tail-1)*int(e))],width=0,fill="gray")
+            if (len(snake_coord)>=(tail+1)*int(e/2)):
+                arc = C.create_oval(snake_coord[-((tail+1)*int(e/2))],width=0,fill="gray")
         tail = tail+1
 
     if coord[1]>e*goal_position[1] or coord[1]<0 or coord[0]>e*goal_position[0] or coord[0]<0:
@@ -213,12 +221,14 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
             close=1
     snake_coord.append(coord)
     tail = 1
-    while tail<=snake_s and len(snake_coord)>=tail*5:
+    while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
             arc = C.create_arc(snake_coord[-1],start=shut + angle,extent= (360-2*angle),fill="red")
+            arc = C.create_oval(snake_coord[-int(e/2)],width=0,fill="red")
         else:
         #    print -(tail*5)
-            arc = C.create_oval(snake_coord[-(tail*5)],width=0,fill="red")
+            arc = C.create_oval(snake_coord[-((tail-1)*int(e))],width=0,fill="red")
+            arc = C.create_oval(snake_coord[-((tail+1)*int(e/2))],width=0,fill="red")
         tail = tail+1
 
     createGridVisible(l1,objs1,objs_h1)
