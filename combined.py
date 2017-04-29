@@ -117,7 +117,7 @@ def astar(array, start, goal):
 
 def readScenario(fileName, scalex=1., scaley=1.):
 
-    if fileName=='allway_agents.csv':
+    if fileName=='hallway_agents.csv':
         scalex = 0.75
         scaley = 2
 

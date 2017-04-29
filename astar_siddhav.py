@@ -1,4 +1,5 @@
 from operator import itemgetter
+print('astar')
 # The car can perform 3 actions: 0: right turn, 1: no turn, 2: left turn
 action = [-1, 0, 1]
 #action  = [0,0,0]
@@ -10,33 +11,33 @@ orientation = [0, 1, 2, 3] #U L D R
 # GRID:
 #     0 = navigable space
 #     1 = unnavigable space
-'''grid = [[1, 1, 1, 0, 0, 0],
-        [1, 1, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0],
-        [1, 1, 1, 0, 1, 1],
-        [1, 1, 1, 0, 1, 1]]'''
-grid = [[0 for x in range(20)] for y in range(20)]
-plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
-'''heuristic = [[2, 3, 4, 5, 6, 7],
-            [1, 2, 3, 4, 5, 6],
-            [0, 1, 2, 3, 4, 5],
-            [1, 2, 3, 4, 5, 6],
-            [2, 3, 4, 5, 6, 7]]'''
-heuristic = [[0 for x in range(20)] for y in range(20)]
-obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
 
-
-start = [4, 3, 2] #[grid row, grid col, direction]
-
-goal = [19, 19] #[grid row, grid col]
-#heuristic fn
 def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
         for c in range(len(heuristic[0])):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
-#function to compute heuristic map
-buildheuristics(grid,goal,heuristic)
-print(heuristic)
+
+def updategheuristic(gstart,heuristic):
+    for i in range(-3,4):
+        for j in range(-3,4):
+            try:
+                if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
+                    continue
+                heuristic[gstart[0]+i][gstart[1]+j] += 100
+                print(i,j)
+            except IndexError:
+                continue
+    heuristic[gstart[0]][gstart[1]] += 50
+    for i in heuristic:
+        temp=[]
+        for anyi in i:
+            #print "%02d" % (1,)
+            #print "%02d" %  (anyi)
+            temp.append("%03d" %  (anyi))
+        #print heuristic[i]
+        print(temp)
+        #print('')
+        pass
 
 def setobs(grid,obs):
     for o in obs:
@@ -44,11 +45,15 @@ def setobs(grid,obs):
         y = o[1]
         for r in range(o[2]):
             for c in range(o[3]):
-                grid[x+r][y+c] = 1
-    #print(grid)
-setobs(grid,obs)
-setobs(plan,obs)
-#print(grid)
+                grid[x+r][y+c] = str(1)
+                '''
+                i8291=0
+                if(i8291<1):
+                    print('king1')
+                    print(plan[x][y])
+                i8291=i8291+1
+                '''
+
 
 def neighbours(curr,neigh):
     r = curr[3]
@@ -150,7 +155,7 @@ def movecost(curr,coord):
     coord[2] = orient
     coord[3] = actn
     return mcost
-def compute_plan(grid,start,goal,cost,heuristic):
+def compute_plan(grid,start,goal,cost,heuristic,plan):
     parent = [[[[0 for d in range(3)] for t in range(4)] for row in range(len(grid[0]))] for col in range(len(grid))]
     clsd = [] #variable for the closed spaces
     x = start[0]
@@ -210,20 +215,59 @@ def compute_plan(grid,start,goal,cost,heuristic):
             print("goal reached!")
             break
     #get current data to trace back the path
+    points = []
     x = current[3]
     y = current[4]
     actn = current[6]
     ori = current[5]
+    points.insert(0,[x,y,dir_name[ori]])
     plan[x][y] = dir_name[ori] #set the action in plan for final node
     while not (parent[x][y][ori] == [500,500,500]):
         #print(x,y,ori)
         #actn = data[x][y][6]
         [x,y,ori,actn] = parent[x][y][ori] #set action in plan for all other nodes
         plan[x][y] = dir_name[ori]
-    return plan
+        points.insert(0,[x,y,dir_name[ori]])
+    return points,plan
 
-def show(p):
-    for i in range(len(p)):
-        print p[i]
+#def show(p):
+#    for i in range(len(p)):
+#        print p[i]
+#    print(points)
 
-show(compute_plan(grid, start, goal, cost,heuristic))
+def astar(start,grid,obs,goal):
+    '''
+    read this before sending data
+    after you have imported this code, call the astar function with the following parameters
+    start = [row,col,direction] (direction = 0,1,2,3 as can be seen in the starting lines of the code)
+    grid = NxN 2D list with 0 = accessible space and 1 = inaccessible space
+    obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
+    goal = [row,col]
+
+    returns points = [row,col,direction], plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
+    ...actions
+    '''
+    plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
+    setobs(grid,obs)
+    setobs(plan,obs)
+    buildheuristics(grid,goal,heuristic)
+    updategheuristic(gstart,heuristic)
+    points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
+    for pr in range(len(plan)):
+        print(plan[pr])
+    print(points)
+    return points,plan
+    '''
+    the 'points' variable has three values. [row,col,direction]
+    '''
+
+if __name__== "__main__":
+    grid = [[0 for x in range(20)] for y in range(20)]
+    heuristic = [[0 for x in range(20)] for y in range(20)]
+    obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
+    gstart = [6,16]
+    start = [4, 3, 2] #[grid row, grid col, direction]
+
+    goal = [6, 18] #[grid row, grid col] initial goal
+    #heuristic fn
+    pts,pln = astar(start,grid,obs,goal)
