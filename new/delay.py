@@ -12,6 +12,10 @@ print(grid)
 A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600]]
 rect=[]
 list_line=[]
+obstacle_coord=[]
+snake_coord = []
+snake_size=8
+
 #e is length of a square in the grid
 e=25
 obstacle_list=[]
@@ -82,8 +86,9 @@ for xs1 in range (0,l1):
 def createGridVisible(l,objs,objs_h):
     in2=0
     for in2 in range(0,l):
-        id = C.create_line(objs[in2].a,objs[in2].b,objs[in2].c,objs[in2].d,fill="red")
-        id2 = C.create_line(objs_h[in2].a,objs_h[in2].b,objs_h[in2].c,objs_h[in2].d,fill="red")
+        id1 =C.create_line(objs[in2].a,objs[in2].b,objs[in2].c,objs[in2].d,fill="red")
+        id2 =C.create_line(objs_h[in2].a,objs_h[in2].b,objs_h[in2].c,objs_h[in2].d,fill="red")
+
     pass
 
 def createVisibleObstacles(grid):
@@ -97,13 +102,19 @@ def createVisibleObstacles(grid):
                 #print('conditions satisfied')
                 #n1,m1,n2,m2 is what corodinates are to send for obs
                 coordinate2=m*e,n*e,(m+1)*e,(n+1)*e
-                id = C.create_rectangle(coordinate2,fill="#000fff000" )
+                #id = C.create_rectangle(coordinate2,fill="#000fff000" )
+                obstacle_coord.append(C.create_rectangle(coordinate2,fill="#000fff000" ))
             m=m+1
         n=n+1
     #d = C.create_rectangle(coordinate2,fill="#000fff000" )
-    pass
+#    pass
 # so we need functions that can move along 2 perpendicular axes.
 #only question remained is why al obstacles are not shown from the obstacle list
+
+def drawObstacles():
+    for coordinate2 in obstacle_coord:
+        C.itemconfig(coordinate2)
+
 
 for any21 in obstacle_list:
     obj_obs11=any21
@@ -121,8 +132,18 @@ for any21 in obstacle_list:
 #here we have data from backend and graphics
 #this is the place where backend affects front ended
 #important note:- m up and down n right and left= mxn grid
-def motion_snake():
-    pass
+
+
+#yet to complete
+def generateApple():
+    x,y=-1,-1
+    while grid[x][y]!=1:
+        x= randint(0,gridsize)
+        y= randint(0,gridsize)
+
+    arc = C.create_oval(x+2,y+2,x+e-2,y+e-2,width=0,fill="black")
+    return x,y
+
 
 top = Tkinter.Tk()
 counter=0
@@ -132,9 +153,16 @@ arc=C.create_arc(coordinate,start=30,extent=300,fill="red")
 angle=45
 close =1
 flag1=True
+createVisibleObstacles(grid)
+createGridVisible(l,objs,objs_h)
+snake_coord.append(coordinate)
 
-def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation):
+#check if the grid has changed.
+
+
+def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orientation):
 #    print orientation
+    global shut
     if orientation == 3: #R
         a=1
         b=0
@@ -160,7 +188,13 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation):
         d=-1
         shut = 90
 
-    arc = C.create_arc(coord,outline="gray",start=shut + angle,extent=(360-2*angle),fill="gray")
+    tail = 1
+    while tail<=snake_s and len(snake_coord)>=tail*5:
+        if tail ==1:
+            arc = C.create_arc(snake_coord[-1],outline="gray",start=shut + angle,extent=(360-2*angle),fill="gray")
+        else:
+            arc = C.create_oval(snake_coord[-(tail*5)],width=0,fill="gray")
+        tail = tail+1
 
     if coord[1]>e*goal_position[1] or coord[1]<0 or coord[0]>e*goal_position[0] or coord[0]<0:
         if coord[1]>e*goal_position[1] or coord[1]<0:
@@ -170,22 +204,36 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation):
     else:
         coord=coord[0]+1*a,coord[1]+1*b,coord[2]+1*c,coord[3]+1*d
     if angle >0 and close ==1:
-        angle=angle-1
+        angle=angle-5
         if angle ==0:
             close =0
     elif angle<45 and close==0:
-        angle =angle+1
+        angle =angle+5
         if angle ==45:
             close=1
-    arc = C.create_arc(coord,start=shut + angle,extent= (360-2*angle),fill="red")
+    snake_coord.append(coord)
+    tail = 1
+    while tail<=snake_s and len(snake_coord)>=tail*5:
+        if tail ==1:
+            arc = C.create_arc(snake_coord[-1],start=shut + angle,extent= (360-2*angle),fill="red")
+        else:
+        #    print -(tail*5)
+            arc = C.create_oval(snake_coord[-(tail*5)],width=0,fill="red")
+        tail = tail+1
 
     createGridVisible(l1,objs1,objs_h1)
-    createVisibleObstacles(grid1)
+    drawObstacles()
+    #for coordinate2 in obstacle_coord:
+    #    id = C.create_rectangle(coordinate2,fill="#000fff000" )
+    if coord[0]%e==goal_position[0] and coord[1]%e==goal_position[1]:
+        print "Reached apple"
+        snake_s = snake_s+1
+
     if (coord[0]%e==0 and coord[1]%e==0):
         pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid.tolist(),goal_position)
-        top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,pathtotake[1][2]))
+        top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,pathtotake[1][2]))
     else:
-        top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation))
+        top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orientation))
 
 
 C.pack()
@@ -194,7 +242,7 @@ C.pack()
 
 #print grid.tolist()
 pathtotake = astar_v2(initial_position,grid.tolist(),goal_position)
-top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,pathtotake[1][2]))
+top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
 '''
 while(flag1):
     #snake(coordinate,angle,close,flag1,l,objs,objs_h,grid)
