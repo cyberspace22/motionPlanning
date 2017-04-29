@@ -1,10 +1,10 @@
 import Tkinter
 import tkMessageBox
 from Sanghatest11 import *
-from test import *
+from astar_sid import *
 
-initial_position=[0,0]
-goal_position=[10,10]
+initial_position=[0,0,3]
+goal_position=[11,11]
 print('\n\n')
 gridsize=20
 grid=backEndGrid(gridsize)
@@ -12,7 +12,7 @@ print(grid)
 A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600]]
 rect=[]
 list_line=[]
-#e is scalling constant for everything
+#e is length of a square in the grid
 e=25
 obstacle_list=[]
 class obs_cord():
@@ -116,7 +116,7 @@ for any21 in obstacle_list:
     grid=update_grid_with_obs(grid,rect)
     #now the grid is up to date, it is allready an array
     #print "Final grid"
-    print(grid)
+#    print(grid)
 # we have final grid enviornment with all posible obstacles
 #here we have data from backend and graphics
 #this is the place where backend affects front ended
@@ -134,26 +134,26 @@ close =1
 flag1=True
 
 def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation):
-
-    if orientation == 'R':
+#    print orientation
+    if orientation == 3: #R
         a=1
         b=0
         c=1
         d=0
         shut = 360
-    elif orientation == 'D':
+    elif orientation == 2: #D
         a=0
         b=1
         c=0
         d=1
         shut = 270
-    elif orientation == 'L' :
+    elif orientation == 1 : #L
         a=-1
         b=0
         c=-1
         d=0
         shut = 180
-    elif orientation == 'U' :
+    elif orientation == 0 : #U
         a=0
         b=-1
         c=0
@@ -162,7 +162,13 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation):
 
     arc = C.create_arc(coord,outline="gray",start=shut + angle,extent=(360-2*angle),fill="gray")
 
-    coord=coord[0]+1*a,coord[1]+1*b,coord[2]+1*c,coord[3]+1*d
+    if coord[1]>e*goal_position[1] or coord[1]<0 or coord[0]>e*goal_position[0] or coord[0]<0:
+        if coord[1]>e*goal_position[1] or coord[1]<0:
+            coord=coord[0]+1*a,coord[1],coord[2]+1*c,coord[3]
+        if coord[0]>e*goal_position[0] or coord[0]<0:
+            coord=coord[0],coord[1]+1*b,coord[2],coord[3]+1*d
+    else:
+        coord=coord[0]+1*a,coord[1]+1*b,coord[2]+1*c,coord[3]+1*d
     if angle >0 and close ==1:
         angle=angle-1
         if angle ==0:
@@ -172,14 +178,23 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation):
         if angle ==45:
             close=1
     arc = C.create_arc(coord,start=shut + angle,extent= (360-2*angle),fill="red")
-    top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation))
+
     createGridVisible(l1,objs1,objs_h1)
     createVisibleObstacles(grid1)
+    if (coord[0]%e==0 and coord[1]%e==0):
+        pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid.tolist(),goal_position)
+        top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,pathtotake[1][2]))
+    else:
+        top.after(30,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,orientation))
+
 
 C.pack()
 #snake(coordinate,angle,close,flag1,l,objs,objs_h,grid)
 # the main loop of the program
-top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,'D'))
+
+#print grid.tolist()
+pathtotake = astar_v2(initial_position,grid.tolist(),goal_position)
+top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,pathtotake[1][2]))
 '''
 while(flag1):
     #snake(coordinate,angle,close,flag1,l,objs,objs_h,grid)
