@@ -9,11 +9,12 @@ gstart = [6,16] #there is a function to calculate this in the astar_siddhav.py c
 start = [4, 3, 2] #[grid row, grid col, direction]
 goal = [6, 18]
 points,plan = astar(start,grid,obs,goal)
-'''print("Printing from test file")
+print("Printing from test file")
 for pr in range(len(plan)):
     print(plan[pr])
-print(points)'''
+print(points)
 #adding code for ghost
+#may be moved to the master function
 def dotp(x,y):
     z = x[0]*y[0] + x[1]*y[1]
     return z

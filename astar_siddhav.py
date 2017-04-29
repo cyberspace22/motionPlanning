@@ -23,7 +23,7 @@ def updategheuristic(gstart,heuristic):
             try:
                 if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
                     continue
-                heuristic[gstart[0]+i][gstart[1]+j] += 100
+                heuristic[gstart[0]+i][gstart[1]+j] += 30 - 5*max(abs(i),abs(j))
             except IndexError:
                 continue
     heuristic[gstart[0]][gstart[1]] += 50
@@ -34,8 +34,10 @@ def updategheuristic(gstart,heuristic):
             #print "%02d" %  (anyi)
             temp.append("%03d" %  (anyi))
         #print heuristic[i]
-        #print(temp)
+        print(temp)
         #print('')
+    #for i in range(len(heuristic)):
+    #    print(heuristic[i])
 
 
 def setobs(grid,obs):
