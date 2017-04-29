@@ -27,7 +27,7 @@ obj_obs1.y2=00
 '''
 
 
-
+#last work
 def backEndGrid(ab1):
     print('grid creation start here')
     grid=[]
@@ -48,6 +48,7 @@ def backEndGrid(ab1):
 
 
 def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
+    print('started Obstacle_from_pixel_to_grid(obj_obs1,rect1)')
     p1=[0,0]
     p2=[0,0]
 
@@ -81,21 +82,23 @@ def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
         p2[1]=obj_obs1.y1
 
     print('p1 an p2 '+str(p1)+'  '+str(p2))
-
-    xp=int(int(p2[0]-p1[0])/100)
-    yp=int(int(p2[1]-p1[1])/100)
-
+    a1231=1
+    xp=int(int(p2[0]-p1[0])/100*a1231)
+    yp=int(int(p2[1]-p1[1])/100*a1231)
+    print('x pieces and y pieces')
     print(xp)
     print(yp)
+
     # we need keep y const and increase x 3 times and orginal x
-    xLL=int(p1[0]/100)+1
-    yLL=int(p1[1]/100)+1
+    xLL=int(p1[0]/100*a1231)
+    yLL=int(p1[1]/100*a1231)
+
     yo=yLL
-    print('the frist rect x,y = '+str(xLL)+' , '+str(yLL))
+    print('(xLL,yLL) first rect = '+str(xLL)+' , '+str(yLL))
 
 
     for any1 in range(0,xp):
-        print(xLL)
+        #print(xLL)
         for any2 in range(0,yp):
             #print('y shouldnt change')
             #print(yLL)
@@ -105,7 +108,7 @@ def Obstacle_from_pixel_to_grid(obj_obs1,rect1):
         yLL=yo
         xLL=xLL+1
 
-
+    #print(rect1)
     return rect1
 
 
