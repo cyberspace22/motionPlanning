@@ -249,7 +249,9 @@ def astar(start,gr,obs,goal):
     gstart = [6,16] #this is set as of now. Can be changed as per input
     global grid
     grid = gr
-    heuristic = [[0 for x in range(20)] for y in range(20)]
+    rh = len(grid)
+    ch = len(grid[0])
+    heuristic = [[0 for x in range(rh)] for y in range(ch)]
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     setobs(grid,obs)
     setobs(plan,obs)
