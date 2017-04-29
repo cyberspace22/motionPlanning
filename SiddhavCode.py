@@ -205,7 +205,9 @@ def compute_plan(grid,start,goal,cost,heuristic,action,dir_name,plan):
         #actn = data[x][y][6]
         [x,y,ori,actn] = parent[x][y][ori] #set action in plan for all other nodes
         plan[x][y] = dir_name[ori]
+    print plan
     return plan
+	
 
 def show(p):
     for i in range(len(p)):
