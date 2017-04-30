@@ -242,7 +242,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
 #        print p[i]
 #    print(points)
 
-def astar_v2(start,grid,goal,gsize):
+def astar_v2(start,grid,goal):
     '''
     read this before sending data
     after you have imported this code, call the astar function with the following parameters
@@ -254,7 +254,7 @@ def astar_v2(start,grid,goal,gsize):
     returns points = [row,col,direction], plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
     ...actions
     '''
-    heuristic = [[0 for x in range(gsize)] for y in range(gsize)]
+    heuristic = [[0 for x in range(len(grid[0]))] for y in range(len(grid))]
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     buildheuristics(grid,goal,heuristic)
     #updategheuristic(gstart,heuristic)
