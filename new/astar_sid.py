@@ -173,9 +173,9 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
         neigh = []#variable for neighbors
         #print "openvar[0]"
         #print openvar[0]
-        #if !open[0][]:
-        #    print "No path found!"
-        #    break
+        if openvar==[]:
+            print "No path found!"
+            return -1,-1
         current = openvar[0]
         del openvar[0]
         clsd.append(current)
@@ -227,7 +227,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
     y = current[4]
     actn = current[6]
     ori = current[5]
-    points.insert(0,[x,y,dir_name[ori]])
+    points.insert(0,[x,y,ori])
     plan[x][y] = dir_name[ori] #set the action in plan for final node
     while not (parent[x][y][ori] == [500,500,500]):
         #print(x,y,ori)
@@ -242,7 +242,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
 #        print p[i]
 #    print(points)
 
-def astar_v2(start,grid,goal):
+def astar_v2(start,grid,goal,gsize):
     '''
     read this before sending data
     after you have imported this code, call the astar function with the following parameters
@@ -254,13 +254,15 @@ def astar_v2(start,grid,goal):
     returns points = [row,col,direction], plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
     ...actions
     '''
-    heuristic = [[0 for x in range(20)] for y in range(20)]
+    heuristic = [[0 for x in range(gsize)] for y in range(gsize)]
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     buildheuristics(grid,goal,heuristic)
     #updategheuristic(gstart,heuristic)
     points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
-    for pr in range(len(plan)):
-        print(plan[pr])
+    if points==-1 and plan==-1:
+        return -1
+    #for pr in range(len(plan)):
+        #print(plan[pr])
     print(points)
     return points
     '''
