@@ -74,12 +74,12 @@ def updatePos(dt):
     if not ghost[-1]:
         for o in obs:
             tc = ttciso(o,ghost)
-            print("tc = %s"%tc)
+            #print("tc = %s"%tc)
             if tc > 0 and tc < 2:
                 fce = computeisoforce(o,ghost,tc)
-                print("fce = %s" %fce)
+                #print("fce = %s" %fce)
                 fg = [fg[0]+fce[0],fg[1],fce[1]]
-                print("fg=%s" %fg)
+                #print("fg=%s" %fg)
         force = fg
         global reachedgoal
         reachedgoal = True #this is to find if ghost has caught snake
