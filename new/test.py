@@ -47,7 +47,7 @@ def ttciso(x,agent):
     c = dotp(tw,tw) - tr*tr
     if (c < 0):
         return(0)
-    tv = [agent[1][0],agent[1][1]]
+    tv = [0.8*agent[1][0],0.8*agent[1][1]]
     a = dotp(tv,tv) - epspar**2
     b = dotp(tw,tv) - epspar*tr
     #print("b = %s" %b)
@@ -71,7 +71,7 @@ def computeisoforce(ob,nagent,tc):
     fce = []
     disp = [nagent[0][0] - ob[1],nagent[0][1]-ob[0]]
     #print("displacement %s" %disp)
-    relvel = [nagent[3][0],nagent[3][1]]
+    relvel = [0.8*nagent[3][0],0.8*nagent[3][1]]
     #print("V = %s" %relvel)
     r = mgn([disp[0]+relvel[0]*tc,disp[1]+relvel[1]*tc])
     #print("r %s" %r)

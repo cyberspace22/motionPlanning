@@ -307,7 +307,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     print("ggoal = %s" %ggoal)
     global ghcoord
     gstart = ghcoord
-    ghcoord = ghostPlan(gstart,ggoal,obsgh)
+    ghcoord,rgoal = ghostPlan(gstart,ggoal,obsgh)
     #ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
 
     createGridVisible(l1,objs1,objs_h1)
