@@ -1,4 +1,3 @@
-from astar_siddhav import astarold
 from math import sqrt
 from math import exp
 import time
@@ -11,6 +10,22 @@ WINSIZE = [XDIM, YDIM]'''
 inf = float("inf")
 #adding code for ghost
 #may be moved to the master function
+ghost = []
+obstacles = []
+dt = 0.1
+#sensing distance
+sens = 2
+#Parameters for force
+kpar = 1.5
+mpar = 2
+t0par = 3
+epspar = 0.2
+radius = 0.5
+prefspeed = 2
+maxspeed = 2.5
+reachedgoal = False
+adist = 1
+
 def dotp(x,y):
     z = x[0]*y[0] + x[1]*y[1]
     return z
@@ -44,7 +59,7 @@ def ttciso(x,agent):
         return(inf)
     return tau
 
-def mg(a):
+def mgn(a):
     return sqrt(a[0]*a[0] + a[1]*a[1])
 
 def computeisoforce(ob,nagent,tc):
@@ -55,9 +70,9 @@ def computeisoforce(ob,nagent,tc):
     #print("displacement %s" %disp)
     relvel = [nagent[3][0],nagent[3][1]]
     #print("V = %s" %relvel)
-    r = mg([disp[0]+relvel[0]*tc,disp[1]+relvel[1]*tc])
+    r = mgn([disp[0]+relvel[0]*tc,disp[1]+relvel[1]*tc])
     #print("r %s" %r)
-    disc = (dotp(disp,relvel) - r*epspar)**2 - ((mg(relvel)**2) - epspar**2)*(mg(disp)**2 - r**2)
+    disc = (dotp(disp,relvel) - r*epspar)**2 - ((mgn(relvel)**2) - epspar**2)*(mgn(disp)**2 - r**2)
     #print("discriminant %s" %disc)
     fce = [(disp[0] + relvel[0]*tc)/sqrt(disc),(disp[1] + relvel[1]*tc)/sqrt(disc)]
     cal = ((kpar*exp(-tc/t0par))/tc**(mpar+1))*(mpar + tc/t0par)
@@ -81,8 +96,9 @@ def updatePos(dt):
                 fg = [fg[0]+fce[0],fg[1],fce[1]]
                 #print("fg=%s" %fg)
         force = fg
-        if mg(force)>8:
-            par = 8/mg(force)
+        par = 1
+        if (mgn(force) > 8):
+            par = 8/mgn(force)
             print("capping to max force")
         force *= par
         global reachedgoal
@@ -116,36 +132,27 @@ screen.fill(white)
 blue=(0,0,255)
 dobs = [[90,45,10,10]]
 '''
-def ghostPlan(gstart,goal,obstacles):
+def ghostPlan(gstart,goal,obs):
     #gstart = [5,13]
-    dt = 0.1
-    #sensing distance
-    sens = 2
-    #Parameters for force
-    kpar = 1.5
-    mpar = 2
-    t0par = 3
-    epspar = 0.2
-    radius = 0.5
-    prefspeed = 2
-    maxspeed = 2.5
+
+    global obstacles
+    obstacles = obs
     pos = gstart
     vel = [0,0]
     #goal = [5,6] #this will be the current position of the snake
     gvel = [goal[0]-pos[0],goal[1]-pos[1]]
     gvel = [gvel[0]/(sqrt(dotp(gvel,gvel)))*prefspeed,gvel[1]/(sqrt(dotp(gvel,gvel)))*prefspeed]
-    reachedgoal = False
+    global ghost
     ghost = [pos,vel,gvel,goal,radius,prefspeed,maxspeed,reachedgoal]
     #obstacles = [[5,10]]
-    adist = 1
-    if not reachedgoal:
+    #if not reachedgoal:
     '''for bo in dobs:
       pygame.draw.rect(screen,blue,bo)
     pygame.draw.circle(screen,black,(int(ghost[0][1]*10),int(ghost[0][0]*10)),1,0)
     pygame.display.update()
     '''
-        updatePos(dt)
-        return ghost[0]
+    updatePos(dt)
+    return ghost[0]
     #time.sleep(0.1)
 '''running = True
 while running:
