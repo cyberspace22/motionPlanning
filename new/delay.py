@@ -20,7 +20,11 @@ print('\n\n')
 gridsize=30
 grid=backEndGrid(gridsize)
 print(grid)
+<<<<<<< HEAD
 A4x4=[[800,200,900,100],[1800,1400,1200,600],[500,600,1000,2000],[500,1200,1000,200], [2000,2000,2500,2500]]
+=======
+A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600],]
+>>>>>>> a5baa60777e8abaefe32df5e3351261df2d28e36
 rect=[]
 list_line=[]
 obstacle_coord=[]
@@ -83,7 +87,7 @@ def obs_gen(Array4x4,obstacle_list12):
     return obstacle_list12
 
 obstacle_list=obs_gen(A4x4,obstacle_list)
-print("obstacle list = %s" %obstacle_list)
+#print("obstacle list = %s" %obstacle_list)
 objs = [Horizontal_lines() for i in range(grid_lines)]
 
 l=len(objs)
@@ -141,12 +145,12 @@ def drawObstacles():
 
 for any21 in obstacle_list:
     obj_obs11=any21
-    print('\n\n')
+    #print('\n\n')
     rect=Obstacle_from_pixel_to_grid(obj_obs11,rect)
     #this rect is all obstacles of square size ready to fit in grid
     #rect=np.array(rect)
-    print(rect)
-    print('\n\n')
+    #print(rect)
+    #print('\n\n')
     grid=update_grid_with_obs(grid,rect)
     global obsgh
     #print("obsgh = %s" %obsgh)
@@ -301,7 +305,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     #ggoal = [15,20]
     #writing call for ghost function and setting the goal point as snake head
     #print("obsgh = %s" %obsgh)
-    print("ggoal = %s" %ggoal)
+    #print("ggoal = %s" %ggoal)
     global ghcoord
     gstart = ghcoord
     if not paused:
@@ -328,7 +332,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
             goal_position[1],goal_position[0]=generateApple()
             pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
             #quit()
-        print goal_position
+        #print goal_position
 
     if (coord[0]%e==0 and coord[1]%e==0):
             #grid1[int(snake_coord[-12][1]/e),int(snake_coord[-12][0]/e)]=0

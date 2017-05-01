@@ -219,7 +219,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
                 openvar.append(op)#add to open
                 openvar.sort(key=lambda x: x[0]) #sort the openvariable
         if (current[3] == goal[0] and current[4] == goal[1]):
-            print("goal reached!")
+            #print("goal reached!")
             break
     #get current data to trace back the path
     points = []
@@ -263,7 +263,7 @@ def astar_v2(start,grid,goal,gstart):
         return -1
     #for pr in range(len(plan)):
         #print(plan[pr])
-    print(points)
+    #print(points)
     return points
     '''
     the 'points' variable has three values. [row,col,direction]
