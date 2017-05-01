@@ -21,8 +21,8 @@ mpar = 2
 t0par = 3
 epspar = 0.2
 radius = 0.5
-prefspeed = 2
-maxspeed = 2.5
+prefspeed = 5
+maxspeed = 10
 reachedgoal = False
 adist = 1
 

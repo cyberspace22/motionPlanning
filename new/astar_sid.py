@@ -24,7 +24,7 @@ def updategheuristic(gstart,heuristic):
                 if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
                     continue
                 heuristic[gstart[0]+i][gstart[1]+j] += 100
-                print(i,j)
+                #print(i,j)
             except IndexError:
                 continue
     #print(gstart)
@@ -36,7 +36,7 @@ def updategheuristic(gstart,heuristic):
             #print "%02d" %  (anyi)
             temp.append("%03d" %  (anyi))
         #print heuristic[i]
-        print(temp)
+        #print(temp)
         #print('')
         pass
 

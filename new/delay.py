@@ -24,7 +24,7 @@ snake_size=2
 song = pygame.mixer.Sound('pacman_eatfruit.wav')
 
 #details for ghost
-gstart = [20,20]
+gstart = [10,20]
 ggoal = []
 obsgh = []
 ghcoord = gstart
