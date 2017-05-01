@@ -208,6 +208,13 @@ snake_coord.append(coordinate)
 
 staticgrid=grid
 
+def drawGhost(yesorno,gcoord):
+    if yesorno==1:
+        ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width=3,fill = "blue")
+    else:
+        ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width =3, fill = "gray")
+
+
 
 def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orientation):
 #    print orientation
@@ -230,6 +237,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     #        if (len(snake_coord)>(tail+1)*int(e)):
     #            arc = C.create_oval(snake_coord[-((tail+1)*int(e/2))],width=0,fill="gray")
     #            grid1[int(snake_coord[-((tail+1)*int(e))][1]/e),int(snake_coord[-((tail+1)*int(e))][0]/e)]=0
+
         else:
             if len(snake_coord)>(tail-1)*e - int(e/2):
                 arc = C.create_oval(snake_coord[-(tail-1)*e +int(e/2)],width=0,outline="gray",fill="gray")
@@ -237,6 +245,8 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
                 arc = C.create_oval(snake_coord[-(tail-1)*e],width=0,outline="gray",fill="gray")
 
         tail = tail+1
+    drawGhost(0,ghcoord)
+
     #drawGrid()
     if orientation == 3: #R
         a=1
@@ -304,6 +314,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     gstart = ghcoord
     ghcoord = ghostPlan(gstart,ggoal,obsgh)
     ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
+    drawGhost(1,ghcoord)
     createGridVisible(l1,objs1,objs_h1)
 
     createVisibleObstacles(grid1)
@@ -328,14 +339,9 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
             #grid1[int(snake_coord[-12][1]/e),int(snake_coord[-12][0]/e)]=0
 
             if len(snake_coord)>e*(snake_s):
-            #    print ceil(snake_coord[-e*(snake_s)][1]/e),ceil(snake_coord[-e*(snake_s)][0]/e)
-                #print snake_s
+
                 grid1[int(snake_coord[-e*(snake_s)-1][1]/e),int(snake_coord[-e*(snake_s)-1][0]/e)]=0
 
-
-    #    grid1[int(snake_coord[-6][1]/e),int(snake_coord[-6][0]/e)]=2
-
-        #    if len(snake_coord)>6:
             grid1[ceil(snake_coord[-1][1]/e),ceil(snake_coord[-1][0]/e)]=2
             #print grid1
 
