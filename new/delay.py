@@ -9,6 +9,11 @@ import pygame
 
 pygame.init()
 
+drawVels = True
+QUIT = False
+paused = False
+step = False
+
 initial_position=[0,0,3]
 goal_position=[11,11]
 print('\n\n')
@@ -29,7 +34,7 @@ ggoal = []
 obsgh = []
 ghcoord = [10,20]
 #e is length of a square in the grid
-e=30
+e=40
 
 obstacle_list=[]
 class obs_cord():
@@ -172,6 +177,18 @@ def on_key_press(event):
 
 apple=[]
 
+
+top = Tkinter.Tk()
+
+# keyboard interaction
+top.bind("<space>",on_key_press)
+top.bind("s",on_key_press)
+top.bind("<Escape>",on_key_press)
+top.bind("v",on_key_press)
+
+appleimage = Tkinter.PhotoImage(file = 'apple.png')
+ghostimage = Tkinter.PhotoImage(file = 'ghost2.png')
+
 #yet to complete
 def generateApple():
     x,y=-1,-1
@@ -180,22 +197,19 @@ def generateApple():
         y= randint(0,gridsize-1)
 
     apple.append([x,y])
-    C.create_oval(x*e,y*e+2,(x+1)*e-2,(y+1)*e-2,width=0,fill="black")
+    C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
     return x,y
 
 def regenerateApple():
     [x,y]=apple[-1]
-    C.create_oval(x*e,y*e+2,(x+1)*e-2,(y+1)*e-2,width=0,fill="black")
+    C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
 
-top = Tkinter.Tk()
+def drawGhost(gcoord):
+    C.create_image(gcoord[0]*e+e/2,gcoord[1]*e+e/2, image = ghostimage)
+
 counter=0
 coordinate=initial_position[0],initial_position[1],e,e
 
-# keyboard interaction
-top.bind("<space>",on_key_press)
-top.bind("s",on_key_press)
-top.bind("<Escape>",on_key_press)
-top.bind("v",on_key_press)
 
 C = Tkinter.Canvas(top, bg="gray", height=1200, width =1200)
 arc=C.create_arc(coordinate,start=30,extent=300,fill="red")
@@ -210,13 +224,6 @@ snake_coord.append(coordinate)
 
 staticgrid=grid
 
-#def drawGhost(gcoord):
-#    if yesorno==1:
-    #ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width=3,fill = "blue")
-#    else:
-#        ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width =3, fill = "gray")
-
-
 
 def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orientation):
 #    print orientation
@@ -225,11 +232,16 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     global shut
     C.delete(Tkinter.ALL)
 
+    global step, paused, QUIT
+    if QUIT: #Simulation Loop
+        print("Final size of snake : %s ... quitting"%snake_s)
+        top.destroy()
 
     tail = 1
     while tail<=snake_s:
         if tail ==1: #,
             arc = C.create_arc(snake_coord[-1],outline="gray",start=shut + angle,extent=(360-2*angle),fill="gray")
+        #    C.create_oval(snake_coord[-1][0]+2,snake[-1][1]+2,snake_coord[-1][0]+6,snake[-1][1]+6,fill ="black")
         else:
             if len(snake_coord)>(tail-1)*e - int(e/2):
                 arc = C.create_oval(snake_coord[-(tail-1)*e +int(e/2)],width=0,outline="gray",fill="gray")
@@ -266,13 +278,9 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         d=-1
         shut = 90
 
-    if coord[1]<0 or coord[0]<0:
-        if coord[1]<0:
-            coord=coord[0]+1*a,coord[1],coord[2]+1*c,coord[3]
-        if coord[0]<0:
-            coord=coord[0],coord[1]+1*b,coord[2],coord[3]+1*d
-    else:
+    if not paused:
         coord=coord[0]+1*a,coord[1]+1*b,coord[2]+1*c,coord[3]+1*d
+        snake_coord.append(coord)
 
     if angle >0 and close ==1:
         angle=angle-5
@@ -282,11 +290,13 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         angle =angle+5
         if angle ==45:
             close=1
-    snake_coord.append(coord)
+
+    #if not paused
+
     tail = 1
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
-           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (360-2*angle),fill="red")
+           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill="red")
 
         else:
             if len(snake_coord)>(tail-1)*e - int(e/2):
@@ -307,13 +317,16 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     print("ggoal = %s" %ggoal)
     global ghcoord
     gstart = ghcoord
-    ghcoord,rgoal = ghostPlan(gstart,ggoal,obsgh)
+    if not paused:
+        ghcoord,rgoal = ghostPlan(gstart,ggoal,obsgh)
     #ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
+        if rgoal and snake_s!=2:
+            snake_s=snake_s-1
 
     createGridVisible(l1,objs1,objs_h1)
 
     createVisibleObstacles(grid1)
-#    drawGhost(ghcoord)
+    drawGhost(ghcoord)
     regenerateApple()
 
     if coord[0]/e==goal_position[1] and coord[1]/e==goal_position[0]:
@@ -358,7 +371,7 @@ while pathtotake==-1:
     goal_position[1],goal_position[0]=generateApple()
     pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
 print goal_position
-top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
+top.after(10,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
 '''
 while(flag1):
     #snake(coordinate,angle,close,flag1,l,objs,objs_h,grid)
