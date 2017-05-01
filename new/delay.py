@@ -210,11 +210,11 @@ snake_coord.append(coordinate)
 
 staticgrid=grid
 
-def drawGhost(yesorno,gcoord):
-    if yesorno==1:
-        ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width=3,fill = "blue")
-    else:
-        ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width =3, fill = "gray")
+#def drawGhost(gcoord):
+#    if yesorno==1:
+    #ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width=3,fill = "blue")
+#    else:
+#        ghostt = C.create_oval(gcoord[0]*e,gcoord[1]*e,gcoord[0]*e+e,gcoord[1]*e+e,width =3, fill = "gray")
 
 
 
@@ -238,7 +238,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
 
         tail = tail+1
 
-    drawGhost(0,ghcoord)
+
 
     #drawGrid()
     if orientation == 3: #R
@@ -313,7 +313,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     createGridVisible(l1,objs1,objs_h1)
 
     createVisibleObstacles(grid1)
-    drawGhost(1,ghcoord)
+#    drawGhost(ghcoord)
     regenerateApple()
 
     if coord[0]/e==goal_position[1] and coord[1]/e==goal_position[0]:
