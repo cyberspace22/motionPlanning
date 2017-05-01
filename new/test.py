@@ -166,7 +166,7 @@ def ghostPlan(gstart,goal,obs):
     #print("ghost = %s"%ghost[0])
     #print("goal velocity = %s" %ghost[2])
     #time.sleep(5)
-    return ghost[0]
+    return ghost[0],reachedgoal
 
 '''running = True
 while running:
