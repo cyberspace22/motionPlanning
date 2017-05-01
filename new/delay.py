@@ -5,9 +5,6 @@ from astar_sid import astar_v2
 from random import randint
 from math import ceil
 from test import ghostPlan
-import pygame
-
-pygame.init()
 
 initial_position=[0,0,3]
 goal_position=[11,11]
