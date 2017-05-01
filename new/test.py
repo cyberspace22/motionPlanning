@@ -81,6 +81,10 @@ def updatePos(dt):
                 fg = [fg[0]+fce[0],fg[1],fce[1]]
                 #print("fg=%s" %fg)
         force = fg
+        if mg(force)>8:
+            par = 8/mg(force)
+            print("capping to max force")
+        force *= par
         global reachedgoal
         reachedgoal = True #this is to find if ghost has caught snake
         ghost[1] = [(ghost[1][0]+force[0])*dt,(ghost[1][1]+force[1])*dt]

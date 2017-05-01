@@ -1,7 +1,11 @@
 import Tkinter
 import tkMessageBox
 from Sanghatest11 import *
+<<<<<<< HEAD
 from astar_sid import *
+=======
+from astar_sid import astar_v2
+>>>>>>> 67939dc1acedd2fb69787b2b1ec263011f447397
 from random import randint
 from math import ceil
 import pygame
@@ -306,7 +310,11 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
 
         while pathtotake==-1:
             goal_position[1],goal_position[0]=generateApple()
+<<<<<<< HEAD
             pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,gridsize)
+=======
+            pathtotake = astar_v2(initial_position,grid.tolist(),goal_position)
+>>>>>>> 67939dc1acedd2fb69787b2b1ec263011f447397
             #quit()
         print goal_position
 
@@ -325,7 +333,11 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
             grid1[ceil(snake_coord[-1][1]/e),ceil(snake_coord[-1][0]/e)]=2
             #print grid1
 
+<<<<<<< HEAD
             pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid1.tolist(),goal_position,gridsize)
+=======
+            pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid1.tolist(),goal_position)
+>>>>>>> 67939dc1acedd2fb69787b2b1ec263011f447397
 
             top.after(10,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,pathtotake[1][2]))
     else:
@@ -342,7 +354,11 @@ pathtotake=-1
 
 while pathtotake==-1:
     goal_position[1],goal_position[0]=generateApple()
+<<<<<<< HEAD
     pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,gridsize)
+=======
+    pathtotake = astar_v2(initial_position,grid.tolist(),goal_position)
+>>>>>>> 67939dc1acedd2fb69787b2b1ec263011f447397
 print goal_position
 top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
 '''
