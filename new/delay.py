@@ -301,6 +301,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     #writing call for ghost function and setting the goal point as snake head
     global ghcoord
     #print("ggoal = %i" %ggoal)
+    gstart = ghcoord
     ghcoord = ghostPlan(gstart,ggoal,obsgh)
     ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
     createGridVisible(l1,objs1,objs_h1)
