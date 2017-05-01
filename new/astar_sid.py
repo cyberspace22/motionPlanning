@@ -18,17 +18,16 @@ def buildheuristics(grid,goal,heuristic):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
 
 def updategheuristic(gstart,heuristic):
+    hind = [int(round(gstart[0])),int(round(gstart[1]))]
     for i in range(-3,4):
         for j in range(-3,4):
             try:
-                if(((gstart[0]+i) < 0) or ((gstart[1]+j) < 0)):
+                if(((hind[0]+i) < 0) or ((hind[1]+j) < 0)):
                     continue
-                heuristic[gstart[0]+i][gstart[1]+j] += 100
-                print(i,j)
+                heuristic[hind[0]+i][hind[1]+j] += 50 - 5*max(abs(i),abs(j))
             except IndexError:
                 continue
-    #print(gstart)
-    heuristic[gstart[0]][gstart[1]] += 50
+    heuristic[hind[0]][hind[1]] += 50
     for i in heuristic:
         temp=[]
         for anyi in i:
@@ -36,7 +35,7 @@ def updategheuristic(gstart,heuristic):
             #print "%02d" %  (anyi)
             temp.append("%03d" %  (anyi))
         #print heuristic[i]
-        print(temp)
+        #print(temp)
         #print('')
         pass
 
@@ -258,7 +257,7 @@ def astar_v2(start,grid,goal,gstart):
     heuristic = [[0 for x in range(len(grid[0]))] for y in range(len(grid))]
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     buildheuristics(grid,goal,heuristic)
-    updategheuristic(gstart,heuristic)
+    updategheuristic([gstart[1],gstart[0]],heuristic)
     points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
     if points==-1 and plan==-1:
         return -1
