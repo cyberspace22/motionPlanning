@@ -27,6 +27,7 @@ def updategheuristic(gstart,heuristic):
                 print(i,j)
             except IndexError:
                 continue
+    #print(gstart)
     heuristic[gstart[0]][gstart[1]] += 50
     for i in heuristic:
         temp=[]
@@ -242,7 +243,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
 #        print p[i]
 #    print(points)
 
-def astar_v2(start,grid,goal):
+def astar_v2(start,grid,goal,gstart):
     '''
     read this before sending data
     after you have imported this code, call the astar function with the following parameters
@@ -257,7 +258,7 @@ def astar_v2(start,grid,goal):
     heuristic = [[0 for x in range(len(grid[0]))] for y in range(len(grid))]
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     buildheuristics(grid,goal,heuristic)
-    #updategheuristic(gstart,heuristic)
+    updategheuristic(gstart,heuristic)
     points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
     if points==-1 and plan==-1:
         return -1

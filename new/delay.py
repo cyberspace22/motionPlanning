@@ -8,6 +8,7 @@ from astar_sid import astar_v2
 
 from random import randint
 from math import ceil
+from test import ghostPlan
 import pygame
 
 pygame.init()
@@ -26,7 +27,11 @@ snake_coord = []
 snake_size=2
 song = pygame.mixer.Sound('pacman_eatfruit.wav')
 
-
+#details for ghost
+gstart = [20,20]
+ggoal = []
+obsgh = []
+ghcoord = gstart
 #e is length of a square in the grid
 e=30
 obstacle_list=[]
@@ -76,7 +81,7 @@ def obs_gen(Array4x4,obstacle_list12):
     return obstacle_list12
 
 obstacle_list=obs_gen(A4x4,obstacle_list)
-
+print("obstacle list = %s" %obstacle_list)
 objs = [Horizontal_lines() for i in range(grid_lines)]
 
 l=len(objs)
@@ -141,6 +146,8 @@ for any21 in obstacle_list:
     print(rect)
     print('\n\n')
     grid=update_grid_with_obs(grid,rect)
+    global obsgh
+    obsgh = rect
     #now the grid is up to date, it is allready an array
     #print "Final grid"
 #    print(grid)
@@ -277,7 +284,6 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         if angle ==45:
             close=1
     snake_coord.append(coord)
-
     tail = 1
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
@@ -294,6 +300,14 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         #        grid1[int(snake_coord[-((tail+1)*int(e))][1]/e),int(snake_coord[-((tail+1)*int(e))][0]/e)]=2
         tail = tail+1
 
+    #ggoal = [snake_coord[e*(snake_s-1)][0]/e,snake_coord[e*(snake_s-1)][1]/e]
+    ggoal = snake_coord[-1]
+    #writing call for ghost function and setting the goal point as snake head
+    global ghcoord
+    #print("ggoal = %i" %ggoal)
+    gstart = ghcoord
+    ghcoord = ghostPlan(gstart,ggoal,obsgh)
+    ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
     createGridVisible(l1,objs1,objs_h1)
 
     createVisibleObstacles(grid1)
@@ -310,11 +324,15 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
 
         while pathtotake==-1:
             goal_position[1],goal_position[0]=generateApple()
+<<<<<<< HEAD
 
             pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,gridsize)
 
             pathtotake = astar_v2(initial_position,grid.tolist(),goal_position)
 
+=======
+            pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
+>>>>>>> 4661992ff3ec27ac2063039999f2f3f4fb623da6
             #quit()
         print goal_position
 
@@ -333,10 +351,14 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
             grid1[ceil(snake_coord[-1][1]/e),ceil(snake_coord[-1][0]/e)]=2
             #print grid1
 
+<<<<<<< HEAD
 
             pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid1.tolist(),goal_position,gridsize)
 
             pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid1.tolist(),goal_position)
+=======
+            pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid1.tolist(),goal_position,ghcoord)
+>>>>>>> 4661992ff3ec27ac2063039999f2f3f4fb623da6
 
 
             top.after(10,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,pathtotake[1][2]))
@@ -354,11 +376,15 @@ pathtotake=-1
 
 while pathtotake==-1:
     goal_position[1],goal_position[0]=generateApple()
+<<<<<<< HEAD
 
     pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,gridsize)
 
     pathtotake = astar_v2(initial_position,grid.tolist(),goal_position)
 
+=======
+    pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
+>>>>>>> 4661992ff3ec27ac2063039999f2f3f4fb623da6
 print goal_position
 top.after(30,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
 '''
