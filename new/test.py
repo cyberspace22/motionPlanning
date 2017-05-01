@@ -2,11 +2,7 @@ from math import sqrt
 from math import exp
 import time
 import functools
-'''import pygame
-from pygame.locals import *
-XDIM = 200
-YDIM = 200
-WINSIZE = [XDIM, YDIM]'''
+
 inf = float("inf")
 #adding code for ghost
 #may be moved to the master function
@@ -19,7 +15,7 @@ sens = 2
 kpar = 1.5
 mpar = 2
 t0par = 3
-epspar = 0.3
+epspar = 0.2
 radius = 0.5
 prefspeed = 0.15
 maxspeed = 0.20
@@ -115,7 +111,7 @@ def updatePos(dt):
             ghost[1] = [ghost[6]*ghost[1][0]/mg,ghost[6]*ghost[1][1]/mg]
         #update position
         ghost[0] = [ghost[0][0]+ghost[1][0]*dt,ghost[0][1]+ghost[1][1]*dt]
-        print(ghost[1])
+        #print(ghost[1])
         #find goal vel for next step
         gv = [ghost[3][0]-ghost[0][0],ghost[3][1]-ghost[0][1]]
         distToGoal = dotp(gv,gv)
@@ -146,8 +142,8 @@ def ghostPlan(gstart,goal,obs):
     obstacles = obs
     pos = gstart
     #goal = [5,6] #this will be the current position of the snake
-    print "goal"
-    print pos
+    #print "goal"
+    #print pos
     gvel = [goal[0]-pos[0],goal[1]-pos[1]]
     gvel = [gvel[0]/(sqrt(dotp(gvel,gvel)))*prefspeed,gvel[1]/(sqrt(dotp(gvel,gvel)))*prefspeed]
     global ghost
