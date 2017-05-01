@@ -146,6 +146,8 @@ def ghostPlan(gstart,goal,obs):
     obstacles = obs
     pos = gstart
     #goal = [5,6] #this will be the current position of the snake
+    print "goal"
+    print pos
     gvel = [goal[0]-pos[0],goal[1]-pos[1]]
     gvel = [gvel[0]/(sqrt(dotp(gvel,gvel)))*prefspeed,gvel[1]/(sqrt(dotp(gvel,gvel)))*prefspeed]
     global ghost
