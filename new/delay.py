@@ -20,14 +20,14 @@ print('\n\n')
 gridsize=30
 grid=backEndGrid(gridsize)
 print(grid)
-A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600]]
+A4x4=[[800,200,900,100],[1800,1400,1200,600],[500,600,1000,2000],[500,1200,1000,200], [2000,2000,2500,2500]]
 rect=[]
 list_line=[]
 obstacle_coord=[]
 snake_coord = []
 snake_size=2
 song = pygame.mixer.Sound('pacman_eatfruit.wav')
-
+ghosteatssnake = pygame.mixer.Sound('smb_bowserfalls.wav')
 #details for ghost
 gstart = [10,20]
 ggoal = []
@@ -237,19 +237,6 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         print("Final size of snake : %s ... quitting"%snake_s)
         top.destroy()
 
-    tail = 1
-    while tail<=snake_s:
-        if tail ==1: #,
-            arc = C.create_arc(snake_coord[-1],outline="gray",start=shut + angle,extent=(360-2*angle),fill="gray")
-        #    C.create_oval(snake_coord[-1][0]+2,snake[-1][1]+2,snake_coord[-1][0]+6,snake[-1][1]+6,fill ="black")
-        else:
-            if len(snake_coord)>(tail-1)*e - int(e/2):
-                arc = C.create_oval(snake_coord[-(tail-1)*e +int(e/2)],width=0,outline="gray",fill="gray")
-            if len(snake_coord)>(tail-1)*e:
-                arc = C.create_oval(snake_coord[-(tail-1)*e],width=0,outline="gray",fill="gray")
-
-        tail = tail+1
-
 
 
     #drawGrid()
@@ -297,7 +284,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
            arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill="red")
-
+           #arc = C.create_oval(snake_coord[-1][0],snake_coord[-1][1]+2,snake_coord[-1][0]+20,snake_coord[-1][1]+, width = 0, fill ="black")
         else:
             if len(snake_coord)>(tail-1)*e - int(e/2):
                 arc = C.create_oval(snake_coord[-(tail-1)*e + int(e/2)],outline="black",width=0,fill="red")
@@ -322,6 +309,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     #ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
         if rgoal and snake_s!=2:
             snake_s=snake_s-1
+            ghosteatssnake.play()
 
     createGridVisible(l1,objs1,objs_h1)
 
