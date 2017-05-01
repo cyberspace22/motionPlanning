@@ -1,4 +1,4 @@
-from Tkinter import tk
+import Tkinter as tk
 
 self.title = Label(root, text="Brnr", font=("Helvetica", 50), anchor = W, pady = 40, padx = 50)
 
