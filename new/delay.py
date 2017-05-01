@@ -228,16 +228,6 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     while tail<=snake_s:
         if tail ==1: #,
             arc = C.create_arc(snake_coord[-1],outline="gray",start=shut + angle,extent=(360-2*angle),fill="gray")
-    #        if (len(snake_coord)>int(e/2)):
-    #            arc = C.create_oval(snake_coord[-int(e/2)],width=0,fill="gray")
-        #    grid1[int(snake_coord[-1][1]/e),int(snake_coord[-1][0]/e)]=0
-    #    else:
-    #        if (len(snake_coord)>(tail-1)*e):
-    #            arc = C.create_oval(snake_coord[-((tail-1)*e)],width=0,fill="gray")
-    #        if (len(snake_coord)>(tail+1)*int(e)):
-    #            arc = C.create_oval(snake_coord[-((tail+1)*int(e/2))],width=0,fill="gray")
-    #            grid1[int(snake_coord[-((tail+1)*int(e))][1]/e),int(snake_coord[-((tail+1)*int(e))][0]/e)]=0
-
         else:
             if len(snake_coord)>(tail-1)*e - int(e/2):
                 arc = C.create_oval(snake_coord[-(tail-1)*e +int(e/2)],width=0,outline="gray",fill="gray")
@@ -245,6 +235,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
                 arc = C.create_oval(snake_coord[-(tail-1)*e],width=0,outline="gray",fill="gray")
 
         tail = tail+1
+
     drawGhost(0,ghcoord)
 
     #drawGrid()
@@ -294,16 +285,13 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
            arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (360-2*angle),fill="red")
-    #       if len(snake_coord)>int(e/2):
-    #            arc = C.create_oval(snake_coord[-int(e/2)],width=0,fill="red")
-    #        grid1[int(snake_coord[-1][1]/e),int(snake_coord[-1][0]/e)]=2
+
         else:
             if len(snake_coord)>(tail-1)*e - int(e/2):
                 arc = C.create_oval(snake_coord[-(tail-1)*e + int(e/2)],outline="black",width=0,fill="red")
             if len(snake_coord)>(tail-1)*e:
                 arc = C.create_oval(snake_coord[-(tail-1)*e],outline="black",width=0,fill="red")
 
-        #        grid1[int(snake_coord[-((tail+1)*int(e))][1]/e),int(snake_coord[-((tail+1)*int(e))][0]/e)]=2
         tail = tail+1
 
     #ggoal = [snake_coord[e*(snake_s-1)][0]/e,snake_coord[e*(snake_s-1)][1]/e]
@@ -320,8 +308,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     createVisibleObstacles(grid1)
 
     regenerateApple()
-    #for coordinate2 in obstacle_coord:
-    #    id = C.create_rectangle(coordinate2,fill="#000fff000" )
+
     if coord[0]/e==goal_position[1] and coord[1]/e==goal_position[0]:
         print "Reached apple"
         snake_s = snake_s+1
