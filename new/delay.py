@@ -27,9 +27,10 @@ song = pygame.mixer.Sound('pacman_eatfruit.wav')
 gstart = [10,20]
 ggoal = []
 obsgh = []
-ghcoord = gstart
+ghcoord = [10,20]
 #e is length of a square in the grid
 e=30
+
 obstacle_list=[]
 class obs_cord():
     #diagonally opposite 2 points are sufficicent, nothing else needed
@@ -143,6 +144,7 @@ for any21 in obstacle_list:
     print('\n\n')
     grid=update_grid_with_obs(grid,rect)
     global obsgh
+    #print("obsgh = %s" %obsgh)
     obsgh = rect
     #now the grid is up to date, it is allready an array
     #print "Final grid"
@@ -295,18 +297,23 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         tail = tail+1
 
     #ggoal = [snake_coord[e*(snake_s-1)][0]/e,snake_coord[e*(snake_s-1)][1]/e]
-    ggoal = snake_coord[-1]
+    if len(snake_coord) > e*(snake_s-1):
+        ggoal = [snake_coord[-e*(snake_s-1)][0]/e,snake_coord[-e*(snake_s-1)][1]/e]
+    else:
+        ggoal = [snake_coord[-1][0]/e,snake_coord[-1][1]/e]
+    #ggoal = [15,20]
     #writing call for ghost function and setting the goal point as snake head
+    #print("obsgh = %s" %obsgh)
+    print("ggoal = %s" %ggoal)
     global ghcoord
-    #print("ggoal = %i" %ggoal)
     gstart = ghcoord
     ghcoord = ghostPlan(gstart,ggoal,obsgh)
-    ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
-    drawGhost(1,ghcoord)
+    #ghcoord = [int(round(ghcoord[0])),int(round(ghcoord[1]))]
+
     createGridVisible(l1,objs1,objs_h1)
 
     createVisibleObstacles(grid1)
-
+    drawGhost(1,ghcoord)
     regenerateApple()
 
     if coord[0]/e==goal_position[1] and coord[1]/e==goal_position[0]:

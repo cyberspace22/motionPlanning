@@ -19,13 +19,14 @@ sens = 2
 kpar = 1.5
 mpar = 2
 t0par = 3
-epspar = 0.2
+epspar = 0.3
 radius = 0.5
-prefspeed = 5
-maxspeed = 10
+prefspeed = 0.25
+maxspeed = 0.35
 reachedgoal = False
 adist = 1
-
+vel = [0,0]
+ghost = [[],vel,[],[],radius,prefspeed,maxspeed,reachedgoal]
 def dotp(x,y):
     z = x[0]*y[0] + x[1]*y[1]
     return z
@@ -33,15 +34,16 @@ def dotp(x,y):
 def sensrad(ghost,obstacles):
     obsvar = []
     for ob in obstacles:
-        dist = sqrt((ghost[0][0]-ob[0])**2 + (ghost[0][1]-ob[1])**2)
-        if(dist < sens):
+        dist = (ghost[0][0]-ob[1])**2 + (ghost[0][1]-ob[0])**2
+        if(dist < sens**2):
             obsvar.append(ob)
+    #print("nearest obstacles = %s"%obsvar)
     return obsvar
 
 
 def ttciso(x,agent):
     tr = agent[4] * 2
-    tw = [-x[0] + agent[0][0],-x[1] + agent[0][1]]
+    tw = [-x[1] + agent[0][0],-x[0] + agent[0][1]]
     c = dotp(tw,tw) - tr*tr
     if (c < 0):
         return(0)
@@ -57,6 +59,7 @@ def ttciso(x,agent):
     tau = c/(-b + sqrt(discr))
     if(tau < 0):
         return(inf)
+    #print("time to coll = %s" %tau)
     return tau
 
 def mgn(a):
@@ -66,7 +69,7 @@ def computeisoforce(ob,nagent,tc):
     #find relative displacement
     disc = 0
     fce = []
-    disp = [nagent[0][0] - ob[0],nagent[0][1]-ob[1]]
+    disp = [nagent[0][0] - ob[1],nagent[0][1]-ob[0]]
     #print("displacement %s" %disp)
     relvel = [nagent[3][0],nagent[3][1]]
     #print("V = %s" %relvel)
@@ -78,39 +81,41 @@ def computeisoforce(ob,nagent,tc):
     cal = ((kpar*exp(-tc/t0par))/tc**(mpar+1))*(mpar + tc/t0par)
     fce[0] = fce[0]*cal
     fce[1] = fce[1]*cal
-    print("fce = %s" %fce)
+    #print("fce = %s" %fce)
     return fce
 
 def updatePos(dt):
     #print("entered update sim")
-    fg = [(ghost[2][0] - ghost[1][0])/0.5,(ghost[2][1] - ghost[1][1])/0.5]
+    fg = [(ghost[2][0] - ghost[1][0]),(ghost[2][1] - ghost[1][1])]
     #find obstacles within a sensing radius
     obs = sensrad(ghost,obstacles)
+    #print("obstacles = %s" %obs)
     if not ghost[-1]:
         for o in obs:
             tc = ttciso(o,ghost)
             #print("tc = %s"%tc)
-            if tc > 0 and tc < 2:
+            if tc > 0 and tc < inf:
                 fce = computeisoforce(o,ghost,tc)
                 #print("fce = %s" %fce)
-                fg = [fg[0]+fce[0],fg[1],fce[1]]
+                fg = [fg[0]+fce[0],fg[1]+fce[1]]
                 #print("fg=%s" %fg)
         force = fg
         par = 1
         if (mgn(force) > 8):
             par = 8/mgn(force)
-            print("capping to max force")
-        force *= par
+            #print("capping to max force")
+        force = [force[0]*par,force[1]*par]
         global reachedgoal
+        #print("vel beffor adjustment %s" %ghost[1])
         reachedgoal = True #this is to find if ghost has caught snake
-        ghost[1] = [(ghost[1][0]+force[0])*dt,(ghost[1][1]+force[1])*dt]
+        ghost[1] = [ghost[1][0]+force[0]*dt,ghost[1][1]+force[1]*dt]
         #cap it to max speed
         mg = sqrt(dotp(ghost[1],ghost[1]))
         if mg > ghost[6]:
             ghost[1] = [ghost[6]*ghost[1][0]/mg,ghost[6]*ghost[1][1]/mg]
         #update position
         ghost[0] = [ghost[0][0]+ghost[1][0]*dt,ghost[0][1]+ghost[1][1]*dt]
-        print(ghost[0])
+        print(ghost[1])
         #find goal vel for next step
         gv = [ghost[3][0]-ghost[0][0],ghost[3][1]-ghost[0][1]]
         distToGoal = dotp(gv,gv)
@@ -134,16 +139,20 @@ dobs = [[90,45,10,10]]
 '''
 def ghostPlan(gstart,goal,obs):
     #gstart = [5,13]
-
+    if not (gstart == goal):
+        ghost[-1] = False
+    #print("obstacles = %s" %obs)
     global obstacles
     obstacles = obs
     pos = gstart
-    vel = [0,0]
     #goal = [5,6] #this will be the current position of the snake
     gvel = [goal[0]-pos[0],goal[1]-pos[1]]
     gvel = [gvel[0]/(sqrt(dotp(gvel,gvel)))*prefspeed,gvel[1]/(sqrt(dotp(gvel,gvel)))*prefspeed]
     global ghost
-    ghost = [pos,vel,gvel,goal,radius,prefspeed,maxspeed,reachedgoal]
+    ghost[0] = pos
+    ghost[2] = gvel
+    ghost[3] = goal
+    #ghost = [pos,vel,gvel,goal,radius,prefspeed,maxspeed,reachedgoal]
     #obstacles = [[5,10]]
     #if not reachedgoal:
     '''for bo in dobs:
@@ -151,9 +160,14 @@ def ghostPlan(gstart,goal,obs):
     pygame.draw.circle(screen,black,(int(ghost[0][1]*10),int(ghost[0][0]*10)),1,0)
     pygame.display.update()
     '''
+    #print("start = %s" %gstart)
     updatePos(dt)
+    #print("goal = %s" %goal)
+    #print("ghost = %s"%ghost[0])
+    #print("goal velocity = %s" %ghost[2])
+    #time.sleep(5)
     return ghost[0]
-    #time.sleep(0.1)
+
 '''running = True
 while running:
    for event in pygame.event.get():
