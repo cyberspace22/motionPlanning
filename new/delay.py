@@ -29,8 +29,8 @@ print(grid)
 
 A4x4 = []
 #A4x4=[[100,200,300,300],[500,500,800,800],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600],]
-for i in range(100,2800,400):
-    for j in range(100,2800,400):
+for i in range(200,2800,400):
+    for j in range(200,2800,400):
         A4x4.append([i,j,i+200,j+200])
 
 rect=[]
@@ -138,7 +138,7 @@ def createVisibleObstacles(grid):
                 #n1,m1,n2,m2 is what corodinates are to send for obs
                 coordinate2=m*e,n*e,(m+1)*e,(n+1)*e
                 #id = C.create_rectangle(coordinate2,fill="#000fff000" )
-                obstacle_coord.append(C.create_rectangle(coordinate2,fill="#000fff000" ))
+                obstacle_coord.append(C.create_rectangle(coordinate2,fill="peru" ))
             m=m+1
         n=n+1
     #d = C.create_rectangle(coordinate2,fill="#000fff000" )
@@ -223,8 +223,8 @@ counter=0
 coordinate=initial_position[0],initial_position[1],e,e
 
 
-C = Tkinter.Canvas(top, bg="gray", height=1200, width =1200)
-arc=C.create_arc(coordinate,start=30,extent=300,fill="red")
+C = Tkinter.Canvas(top, bg="ivory", height=1200, width =1200)
+arc=C.create_arc(coordinate,start=30,extent=300,fill="crimson")
 angle=45
 close =1
 shut = 360
@@ -235,7 +235,7 @@ snake_coord.append(coordinate)
 #grid[coordinate[0]/e,coordinate[1]/e]=1
 
 staticgrid=grid
-
+snakespeed = 1.5
 
 def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orientation):
 #    print orientation
@@ -278,7 +278,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         shut = 90
 
     if not paused:
-        coord=coord[0]+1*a,coord[1]+1*b,coord[2]+1*c,coord[3]+1*d
+        coord=coord[0]+snakespeed*a,coord[1]+snakespeed*b,coord[2]+snakespeed*c,coord[3]+snakespeed*d
         snake_coord.append(coord)
 
     if angle >0 and close ==1:
@@ -295,21 +295,23 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     tail = 1
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
-           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill="red")
+           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill="crimson")
            #arc = C.create_oval(snake_coord[-1][0],snake_coord[-1][1]+2,snake_coord[-1][0]+20,snake_coord[-1][1]+, width = 0, fill ="black")
         else:
-            if len(snake_coord)>(tail-1)*e - int(e/2):
-                arc = C.create_oval(snake_coord[-(tail-1)*e + int(e/2)],outline="black",width=0,fill="red")
-            if len(snake_coord)>(tail-1)*e:
-                arc = C.create_oval(snake_coord[-(tail-1)*e],outline="black",width=0,fill="red")
+            if len(snake_coord)>(tail-1)*int(e/snakespeed) + int(e/(snakespeed*2)):
+                arc = C.create_oval(snake_coord[-(tail-1)*int (e/snakespeed) + int(e/(snakespeed*2))],outline="black",width=0,fill="crimson")
+            if len(snake_coord)>(tail-1)*int(e/snakespeed):
+                arc = C.create_oval(snake_coord[-(tail-1)*int(e/snakespeed)],outline="black",width=0,fill="crimson")
 
         tail = tail+1
 
     #ggoal = [snake_coord[e*(snake_s-1)][0]/e,snake_coord[e*(snake_s-1)][1]/e]
-    if len(snake_coord) > e*(snake_s-1):
-        ggoal = [snake_coord[-e*(snake_s-1)][0]/e,snake_coord[-e*(snake_s-1)][1]/e]
+    if len(snake_coord) > ceil(e/snakespeed)*(snake_s-1):
+        print "ceil"
+        #print int(snake_coord[-int(ceil(e/snakespeed))*(snake_s-1)][0]/e)
+        ggoal = [ceil(snake_coord[-int(ceil(e/snakespeed))*(snake_s-1)][0]/e),ceil(snake_coord[-int(ceil(e/snakespeed))*(snake_s-1)][1]/e)]
     else:
-        ggoal = [snake_coord[-1][0]/e,snake_coord[-1][1]/e]
+        ggoal = [ceil(snake_coord[-1][0]/e),ceil(snake_coord[-1][1]/e)]
     #ggoal = [15,20]
     #writing call for ghost function and setting the goal point as snake head
     #print("obsgh = %s" %obsgh)
@@ -329,7 +331,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     drawGhost(ghcoord)
     regenerateApple()
 
-    if coord[0]/e==goal_position[1] and coord[1]/e==goal_position[0]:
+    if ceil(coord[0]/e)==goal_position[1] and ceil(coord[1]/e)==goal_position[0]:
         print "Reached apple"
         snake_s = snake_s+1
         song.play()
@@ -345,14 +347,14 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     if (coord[0]%e==0 and coord[1]%e==0):
             #grid1[int(snake_coord[-12][1]/e),int(snake_coord[-12][0]/e)]=0
 
-            if len(snake_coord)>e*(snake_s):
+            if len(snake_coord)>int(ceil(e/snakespeed))*(snake_s)-1:
 
-                grid1[int(snake_coord[-e*(snake_s)-1][1]/e),int(snake_coord[-e*(snake_s)-1][0]/e)]=0
+                grid1[ceil(snake_coord[-int(ceil(e/snakespeed))*(snake_s)-1][1]/e),ceil(snake_coord[-int(ceil(e/snakespeed))*(snake_s)-1][0]/e)]=0
 
             grid1[ceil(snake_coord[-1][1]/e),ceil(snake_coord[-1][0]/e)]=2
             #print grid1
 
-            pathtotake = astar_v2([coord[1]/e,coord[0]/e,orientation],grid1.tolist(),goal_position,ghcoord)
+            pathtotake = astar_v2([int(ceil(coord[1]/e)),int(ceil(coord[0]/e)),orientation],grid1.tolist(),goal_position,ghcoord)
 
             top.after(10,lambda: snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,pathtotake[1][2]))
     else:
