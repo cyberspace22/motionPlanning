@@ -10,15 +10,15 @@ ghost = []
 obstacles = []
 dt = 0.1
 #sensing distance
-sens = 2
+sens = 4
 #Parameters for force
 kpar = 1.5
 mpar = 2
 t0par = 3
 epspar = 0.2
 radius = 0.5
-prefspeed = 0.3
-maxspeed = 0.35
+prefspeed = 0.35
+maxspeed = 0.4
 reachedgoal = False
 adist = 1
 vel = [0,0]
@@ -39,7 +39,7 @@ def sensrad(ghost,obstacles):
 
 def ttciso(x,agent):
     tr = agent[4] * 2
-    tw = [-x[1] + agent[0][0],-x[0] + agent[0][1]]
+    tw = [-0.5-x[1] + agent[0][0],-0.5-x[0] + agent[0][1]]
     c = dotp(tw,tw) - tr*tr
     if (c < 0):
         return(0)
@@ -65,7 +65,7 @@ def computeisoforce(ob,nagent,tc):
     #find relative displacement
     disc = 0
     fce = []
-    disp = [nagent[0][0] - ob[1],nagent[0][1]-ob[0]]
+    disp = [nagent[0][0] - ob[1]-0.5,nagent[0][1]-ob[0]-0.5]
     #print("displacement %s" %disp)
     relvel = [nagent[3][0],nagent[3][1]]
     #print("V = %s" %relvel)
