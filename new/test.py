@@ -17,8 +17,8 @@ mpar = 2
 t0par = 3
 epspar = 0.2
 radius = 0.5
-prefspeed = 0.15
-maxspeed = 0.20
+prefspeed = 0.3
+maxspeed = 0.35
 reachedgoal = False
 adist = 1
 vel = [0,0]
@@ -43,7 +43,7 @@ def ttciso(x,agent):
     c = dotp(tw,tw) - tr*tr
     if (c < 0):
         return(0)
-    tv = [0.7*agent[1][0],0.7*agent[1][1]]
+    tv = [agent[1][0],agent[1][1]]
     a = dotp(tv,tv) - epspar**2
     b = dotp(tw,tv) - epspar*tr
     #print("b = %s" %b)
@@ -67,7 +67,7 @@ def computeisoforce(ob,nagent,tc):
     fce = []
     disp = [nagent[0][0] - ob[1],nagent[0][1]-ob[0]]
     #print("displacement %s" %disp)
-    relvel = [0.7*nagent[3][0],0.7*nagent[3][1]]
+    relvel = [nagent[3][0],nagent[3][1]]
     #print("V = %s" %relvel)
     r = mgn([disp[0]+relvel[0]*tc,disp[1]+relvel[1]*tc])
     #print("r %s" %r)
@@ -97,8 +97,8 @@ def updatePos(dt):
                 #print("fg=%s" %fg)
         force = fg
         par = 1
-        if (mgn(force) > 6):
-            par = 6/mgn(force)
+        if (mgn(force) > 2):
+            par = 2/mgn(force)
             #print("capping to max force")
         force = [force[0]*par,force[1]*par]
         global reachedgoal
