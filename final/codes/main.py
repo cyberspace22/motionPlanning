@@ -15,10 +15,10 @@ step = False
 
 initial_position=[0,0,3]
 goal_position=[11,11]
-print('\n\n')
+#print('\n\n')
 gridsize=40
 grid=backEndGrid(gridsize)
-print(grid)
+#print(grid)
 
 A4x4 = []
 
@@ -239,7 +239,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
 
     global step, paused, QUIT
     if QUIT: #Simulation Loop
-        print("Final size of snake : %s ... quitting"%snake_s)
+        #print("Final size of snake : %s ... quitting"%snake_s)
         top.destroy()
 
     # Orientation of Snake
@@ -284,7 +284,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     # Drawing the grid
     createGridVisible(l1,objs1,objs_h1)
     createVisibleObstacles(grid1)
-    
+
     # Drawing the snake
     tail = 1
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
@@ -342,7 +342,7 @@ while pathtotake==-1:
     goal_position[1],goal_position[0]=generateApple(gstart)
     pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
 
-print goal_position
+#print goal_position
 top.after(10,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
 
 top.mainloop()
