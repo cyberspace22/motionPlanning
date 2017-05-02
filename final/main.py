@@ -1,10 +1,10 @@
 import Tkinter
 import tkMessageBox
-from Sanghatest11 import *
-from astar_sid import astar_v2
+from obstacle import *
+from astar import astar_v2
 from random import randint
 from math import ceil
-from test import ghostPlan
+from powerlaw import ghostPlan
 import pygame
 
 pygame.init()
@@ -21,17 +21,12 @@ grid=backEndGrid(gridsize)
 print(grid)
 
 A4x4 = []
-<<<<<<< HEAD
-for i in range(200,2800,400):
-    for j in range(200,2800,400):
-=======
 
 for i in range(300,3800,800):
     for j in range(300,3800,800):
         A4x4.append([i,j,i+200,j+200])
 for i in range(700,3800,800):
     for j in range(700,3800,800):
->>>>>>> 35598fe8148ec036bd925beab2eaa22390f7cc01
         A4x4.append([i,j,i+200,j+200])
 
 rect=[]
@@ -198,7 +193,7 @@ top.bind("v",on_key_press)
 
 # images for apple and ghost
 appleimage = Tkinter.PhotoImage(file = 'apple.png')
-ghostimage = Tkinter.PhotoImage(file = 'ghost40.png')
+ghostimage = Tkinter.PhotoImage(file = 'ghost.png')
 
 # Randomly generating apple on the map
 def generateApple(ghostc):
