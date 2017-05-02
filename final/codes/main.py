@@ -7,6 +7,10 @@ from math import ceil
 from powerlaw import ghostPlan
 import pygame
 
+
+import time
+start_time = time.time()
+
 pygame.init()
 
 QUIT = False
@@ -203,21 +207,16 @@ def generateApple():
             x= randint(0,gridsize-1)
             y= randint(0,gridsize-1)
         apple.append([x,y])
-        print i
+        #print i
 
     #apple.append([x,y])
     #C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
     #return x,y
 
 # Redrawing geerated apple
-<<<<<<< HEAD
+
 def regenerateApple(i):
     [x,y]=apple[i]
-=======
-def regenerateApple():
-    [x,y]=apple[-1]
-    obsgh.append([x,y])
->>>>>>> d164b545a09e1598d0086d9dacda18b2fda6404a
     C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
 
 # Draw the ghost
@@ -238,12 +237,16 @@ snake_coord.append(coordinate)
 
 staticgrid=grid
 snakespeed = 1.5
+snakecolour = 0
+colours = [ "crimson", "royalblue", "teal" , "goldenrod" ]
 
 def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orientation):
 
     global static
     global applenum
     global shut
+    global snakespeed
+    global snakecolour
     C.delete(Tkinter.ALL)
 
     global step, paused, QUIT
@@ -298,12 +301,12 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     tail = 1
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
-           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill="crimson")
+           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill=colours[snakecolour])
         else:
             if len(snake_coord)>(tail-1)*int(e/snakespeed) + int(e/(snakespeed*2)):
-                arc = C.create_oval(snake_coord[-(tail-1)*int(e/snakespeed) + int(e/(snakespeed*2))],outline="black",width=0,fill="crimson")
+                arc = C.create_oval(snake_coord[-(tail-1)*int(e/snakespeed) + int(e/(snakespeed*2))],outline="black",width=0,fill=colours[snakecolour])
             if len(snake_coord)>(tail-1)*int(e/snakespeed):
-                arc = C.create_oval(snake_coord[-(tail-1)*int(e/snakespeed)],outline="black",width=0,fill="crimson")
+                arc = C.create_oval(snake_coord[-(tail-1)*int(e/snakespeed)],outline="black",width=0,fill=colours[snakecolour])
         tail = tail+1
 
 
@@ -318,6 +321,13 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         ghcoord,rgoal = ghostPlan(gstart,ggoal,obsgh)
         if rgoal and snake_s!=2:
             snake_s=snake_s-1
+            #snakespeed = snakespeed - 0.1
+            if snake_s<5:
+                snakecolour= 0
+            elif snake_s<10:
+                snakecolour= 1
+            if snake_s<15:
+                snakecolour= 2
             ghosteatssnake.play()
 
 
@@ -327,9 +337,17 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     if ceil(coord[0]/e)==goal_position[1] and ceil(coord[1]/e)==goal_position[0]:
         print "Reached apple"
         snake_s = snake_s+1
+        #snakespeed = snakespeed + 0.1
+        if snake_s>5:
+            snakecolour= 1
+        elif snake_s>10:
+            snakecolour= 2
+        if snake_s>15:
+            snakecolour= 3
         song.play()
         pathtotake=-1
         applenum = applenum +1
+
 
         #while pathtotake==-1:
     goal_position[1],goal_position[0]=apple[applenum]
@@ -359,3 +377,5 @@ pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
 top.after(10,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
 
 top.mainloop()
+
+print("--- %s seconds ---" % float(time.time() - start_time)/60)
