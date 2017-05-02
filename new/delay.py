@@ -46,7 +46,7 @@ ggoal = []
 obsgh = []
 ghcoord = [10,20]
 #e is length of a square in the grid
-e=40
+e=30
 
 obstacle_list=[]
 class obs_cord():
