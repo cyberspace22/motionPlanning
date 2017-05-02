@@ -29,8 +29,8 @@ print(grid)
 
 A4x4 = []
 #A4x4=[[100,200,300,300],[500,500,800,800],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600],]
-for i in range(100,2800,400):
-    for j in range(100,2800,400):
+for i in range(200,2800,400):
+    for j in range(200,2800,400):
         A4x4.append([i,j,i+200,j+200])
 
 rect=[]
@@ -138,7 +138,7 @@ def createVisibleObstacles(grid):
                 #n1,m1,n2,m2 is what corodinates are to send for obs
                 coordinate2=m*e,n*e,(m+1)*e,(n+1)*e
                 #id = C.create_rectangle(coordinate2,fill="#000fff000" )
-                obstacle_coord.append(C.create_rectangle(coordinate2,fill="#000fff000" ))
+                obstacle_coord.append(C.create_rectangle(coordinate2,fill="peru" ))
             m=m+1
         n=n+1
     #d = C.create_rectangle(coordinate2,fill="#000fff000" )
@@ -189,7 +189,7 @@ def on_key_press(event):
 
 apple=[]
 
-
+snakespeed = 1
 top = Tkinter.Tk()
 top.title("SnakeMan")
 # keyboard interaction
@@ -223,8 +223,8 @@ counter=0
 coordinate=initial_position[0],initial_position[1],e,e
 
 
-C = Tkinter.Canvas(top, bg="gray", height=1200, width =1200)
-arc=C.create_arc(coordinate,start=30,extent=300,fill="red")
+C = Tkinter.Canvas(top, bg="ivory", height=1200, width =1200)
+arc=C.create_arc(coordinate,start=30,extent=300,fill="crimson")
 angle=45
 close =1
 shut = 360
@@ -295,13 +295,13 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
     tail = 1
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
         if tail ==1:
-           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill="red")
+           arc = C.create_arc(snake_coord[-1],outline="black",start=shut + angle,extent= (359-2*angle),fill="crimson")
            #arc = C.create_oval(snake_coord[-1][0],snake_coord[-1][1]+2,snake_coord[-1][0]+20,snake_coord[-1][1]+, width = 0, fill ="black")
         else:
             if len(snake_coord)>(tail-1)*e - int(e/2):
-                arc = C.create_oval(snake_coord[-(tail-1)*e + int(e/2)],outline="black",width=0,fill="red")
+                arc = C.create_oval(snake_coord[-(tail-1)*e + int(e/2)],outline="black",width=0,fill="crimson")
             if len(snake_coord)>(tail-1)*e:
-                arc = C.create_oval(snake_coord[-(tail-1)*e],outline="black",width=0,fill="red")
+                arc = C.create_oval(snake_coord[-(tail-1)*e],outline="black",width=0,fill="crimson")
 
         tail = tail+1
 
