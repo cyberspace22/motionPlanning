@@ -30,7 +30,7 @@ def dotp(x,y):
 def sensrad(ghost,obstacles):
     obsvar = []
     for ob in obstacles:
-        dist = (ghost[0][0]-ob[1])**2 + (ghost[0][1]-ob[0])**2
+        dist = (ghost[0][0]-ob[1]-0.5)**2 + (ghost[0][1]-ob[0]-0.5)**2
         if(dist < sens**2):
             obsvar.append(ob)
     #print("nearest obstacles = %s"%obsvar)
@@ -39,7 +39,7 @@ def sensrad(ghost,obstacles):
 
 def ttciso(x,agent):
     tr = agent[4] * 2
-    tw = [-x[1] + agent[0][0],-x[0] + agent[0][1]]
+    tw = [-0.5-x[1] + agent[0][0],-0.5-x[0] + agent[0][1]]
     c = dotp(tw,tw) - tr*tr
     if (c < 0):
         return(0)
