@@ -21,16 +21,13 @@ gridsize=30
 grid=backEndGrid(gridsize)
 print(grid)
 
-
-#A4x4=[[800,200,900,100],[1800,1400,1200,600],[500,600,1000,2000],[500,1200,1000,200], [2000,2000,2500,2500]]
-
-#A4x4=[[300,400,100,0],[400,0,600,300],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600],]
-
-
 A4x4 = []
-#A4x4=[[100,200,300,300],[500,500,800,800],[800,200,900,100],[1800,1400,1200,600],[500,600,1000,1000],[500,1200,1000,1600],]
-for i in range(200,2800,400):
-    for j in range(200,2800,400):
+
+for i in range(200,2800,800):
+    for j in range(200,2800,800):
+        A4x4.append([i,j,i+200,j+200])
+for i in range(600,2800,800):
+    for j in range(600,2800,800):
         A4x4.append([i,j,i+200,j+200])
 
 rect=[]
@@ -95,7 +92,7 @@ def obs_gen(Array4x4,obstacle_list12):
     return obstacle_list12
 
 obstacle_list=obs_gen(A4x4,obstacle_list)
-#print("obstacle list = %s" %obstacle_list)
+
 objs = [Horizontal_lines() for i in range(grid_lines)]
 
 l=len(objs)
@@ -134,8 +131,7 @@ def createVisibleObstacles(grid):
         m=0
         for any32 in range(0,lina):#y coord=m
             if(grid[n][m]==1):
-                #print('conditions satisfied')
-                #n1,m1,n2,m2 is what corodinates are to send for obs
+            
                 coordinate2=m*e,n*e,(m+1)*e,(n+1)*e
                 #id = C.create_rectangle(coordinate2,fill="#000fff000" )
                 obstacle_coord.append(C.create_rectangle(coordinate2,fill="peru" ))
@@ -199,7 +195,7 @@ top.bind("<Escape>",on_key_press)
 top.bind("v",on_key_press)
 
 appleimage = Tkinter.PhotoImage(file = 'apple.png')
-ghostimage = Tkinter.PhotoImage(file = 'ghost2.png')
+ghostimage = Tkinter.PhotoImage(file = 'ghost40.png')
 
 #yet to complete
 def generateApple():
