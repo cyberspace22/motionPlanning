@@ -1,22 +1,17 @@
 from operator import itemgetter
-print('astar')
-# The car can perform 3 actions: 0: right turn, 1: no turn, 2: left turn
+
 action = [-1, 0, 1]
-#action  = [0,0,0]
-action_name = ['R', 'F', 'L']
 dir_name = ['U','L','D','R']
-actn = 0
 cost = [1, 1, 1] # corresponding cost values R F L
 orientation = [0, 1, 2, 3] #U L D R
-# GRID:
-#     0 = navigable space
-#     1 = unnavigable space
 
+#build heuristics depending on the goal
 def buildheuristics(grid,goal,heuristic):
     for r in range(len(heuristic)):
         for c in range(len(heuristic[0])):
             heuristic[r][c] = (abs(goal[0]-r) + abs(goal[1] - c))
 
+#update heuristics according to position of the ghost
 def updategheuristic(gstart,heuristic):
     hind = [int(round(gstart[0])),int(round(gstart[1]))]
     for i in range(-3,4):
@@ -28,33 +23,8 @@ def updategheuristic(gstart,heuristic):
             except IndexError:
                 continue
     heuristic[hind[0]][hind[1]] += 50
-    for i in heuristic:
-        temp=[]
-        for anyi in i:
-            #print "%02d" % (1,)
-            #print "%02d" %  (anyi)
-            temp.append("%03d" %  (anyi))
-        #print heuristic[i]
-        #print(temp)
-        #print('')
-        pass
 
-def setobs(grid,obs):
-    for o in obs:
-        x = o[0]
-        y = o[1]
-        for r in range(o[2]):
-            for c in range(o[3]):
-                grid[x+r][y+c] = str(1)
-                '''
-                i8291=0
-                if(i8291<1):
-                    print('king1')
-                    print(plan[x][y])
-                i8291=i8291+1
-                '''
-
-
+#evaluate immediate neighbors
 def neighbours(curr,neigh,grid):
     r = curr[3]
     c = curr[4]
@@ -81,7 +51,6 @@ def movecost(curr,coord):
     c = curr[4] #store the column of current
     orient = curr[5]    #store the orientation of current
     mcost = 0      #variable for movement cost
-    #actn = 0        #variable for action
     if r == coord[0]:
         if coord[1] == c - 1:
             #left neighbor
@@ -153,7 +122,6 @@ def movecost(curr,coord):
     elif (orient == 4):
         orient = 0
     coord[2] = orient
-    #coord[3] = actn
     return mcost
 def compute_plan(grid,start,goal,cost,heuristic,plan):
     parent = [[[[0 for d in range(3)] for t in range(4)] for row in range(len(grid[0]))] for col in range(len(grid))]
@@ -165,14 +133,10 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
     h = heuristic[x][y]
     f = g+h
     openvar = [[f, g, h, x, y, theta]]
-    #print "Openvar"
-    #print openvar
     parent[x][y][theta] = [500,500,500] #in order to identify the start node
     while True:
         flg = 0 #flag to check if current state is in closed or open or neither
         neigh = []#variable for neighbors
-        #print "openvar[0]"
-        #print openvar[0]
         if openvar==[]:
             print "No path found!"
             return -1,-1
@@ -184,9 +148,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
         cst = 0 #cost
         for coord in neigh:#for every accessible neighbor found
             cst = current[1] + movecost(current,coord)
-            #coord = [x,y,theta,action]
             tht = coord[2]
-            #act = coord[3]
             flg = 0
             for a in range(len(clsd)): #check if in closed
                 if ((clsd[a][3] == coord[0]) and (clsd[a][4] == coord[1]) and (clsd[a][5] == coord[2])):
@@ -204,8 +166,7 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
                         openvar[a][0] = cst + openvar[a][2]
                         openvar[a][1] = cst
                         openvar[a][5] = tht
-                        #openvar[a][6] = act
-                        parent[coord[0]][coord[1]][coord[2]] = [current[3],current[4],current[5]]#,coord[3]]
+                        parent[coord[0]][coord[1]][coord[2]] = [current[3],current[4],current[5]]
                         openvar.sort(key=lambda xa: xa[0])
                         break
             if flg == 0:    #if found in neither
@@ -213,47 +174,26 @@ def compute_plan(grid,start,goal,cost,heuristic,plan):
                 hn = heuristic[coord[0]][coord[1]]
                 fn = gn + hn    #set f
                 tht = coord[2]  #set theta
-                #act = coord[3]  #set action
-                parent[coord[0]][coord[1]][coord[2]] = [current[3],current[4],current[5]]#,coord[3]]
+                parent[coord[0]][coord[1]][coord[2]] = [current[3],current[4],current[5]]
                 op = [fn,gn,hn,coord[0],coord [1],tht]#,act]
                 openvar.append(op)#add to open
                 openvar.sort(key=lambda x: x[0]) #sort the openvariable
         if (current[3] == goal[0] and current[4] == goal[1]):
-            #print("goal reached!")
             break
     #get current data to trace back the path
     points = []
     x = current[3]
     y = current[4]
-    #actn = current[6]
     ori = current[5]
     points.insert(0,[x,y,ori])
     plan[x][y] = dir_name[ori] #set the action in plan for final node
     while not (parent[x][y][ori] == [500,500,500]):
-        #print(x,y,ori)
-        #actn = data[x][y][6]
         [x,y,ori] = parent[x][y][ori] #set action in plan for all other nodes
         plan[x][y] = dir_name[ori]
         points.insert(0,[x,y,ori])
     return points,plan
 
-#def show(p):
-#    for i in range(len(p)):
-#        print p[i]
-#    print(points)
-
 def astar_v2(start,grid,goal,gstart):
-    '''
-    read this before sending data
-    after you have imported this code, call the astar function with the following parameters
-    start = [row,col,direction] (direction = 0,1,2,3 as can be seen in the starting lines of the code)
-    grid = NxN 2D list with 0 = accessible space and 1 = inaccessible space
-    obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
-    goal = [row,col]
-
-    returns points = [row,col,direction], plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
-    ...actions
-    '''
     heuristic = [[0 for x in range(len(grid[0]))] for y in range(len(grid))]
     plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
     buildheuristics(grid,goal,heuristic)
@@ -261,47 +201,4 @@ def astar_v2(start,grid,goal,gstart):
     points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
     if points==-1 and plan==-1:
         return -1
-    #for pr in range(len(plan)):
-        #print(plan[pr])
-    #print(points)
     return points
-    '''
-    the 'points' variable has three values. [row,col,direction]
-    '''
-
-def astar(start,grid,obs,goal):
-    '''
-    read this before sending data
-    after you have imported this code, call the astar function with the following parameters
-    start = [row,col,direction] (direction = 0,1,2,3 as can be seen in the starting lines of the code)
-    grid = NxN 2D list with 0 = accessible space and 1 = inaccessible space
-    obs = [[row,col,rowsToSpan,colsToSpan],[row,col,rowsToSpan,colsToSpan]...]
-    goal = [row,col]
-
-    returns points = [row,col,direction], plan = 2D list with '-' as empty space, 1 as obstacles, (U,D,L,R) as...
-    ...actions
-    '''
-    plan =[['-' for row in range(len(grid[0]))] for col in range(len(grid))]
-    setobs(grid,obs)
-    setobs(plan,obs)
-    buildheuristics(grid,goal,heuristic)
-    updategheuristic(gstart,heuristic)
-    points,plan = compute_plan(grid, start, goal, cost,heuristic,plan)
-#    for pr in range(len(plan)):
-#        print(plan[pr])
-    #print(points)
-    return points,plan
-    '''
-    the 'points' variable has three values. [row,col,direction]
-    '''
-
-if __name__== "__main__":
-    grid = [[0 for x in range(20)] for y in range(20)]
-    heuristic = [[0 for x in range(20)] for y in range(20)]
-    obs = [[2,2,2,3],[7,9,3,2],[4,4,3,3],[18,7,2,1]] #[x,y,r,c]
-    gstart = [6,16]
-    start = [4, 3, 2] #[grid row, grid col, direction]
-
-    goal = [6, 18] #[grid row, grid col] initial goal
-    #heuristic fn
-    pts,pln = astar(start,grid,obs,goal)
