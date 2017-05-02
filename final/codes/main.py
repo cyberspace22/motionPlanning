@@ -209,6 +209,7 @@ def generateApple(ghostc):
 # Redrawing geerated apple
 def regenerateApple():
     [x,y]=apple[-1]
+    obsgh.append([x,y])
     C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
 
 # Draw the ghost

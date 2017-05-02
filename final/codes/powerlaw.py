@@ -43,7 +43,7 @@ def sensrad(ghost,obstacles):
 
 #find isotropic time to collision
 def ttciso(x,agent):
-    tr = agent[4] * 2
+    tr = agent[4] * 3
     tw = [-0.5-x[1] + agent[0][0],-0.5-x[0] + agent[0][1]]
     c = dotp(tw,tw) - tr*tr
     if (c < 0):

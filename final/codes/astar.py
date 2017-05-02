@@ -14,15 +14,18 @@ def buildheuristics(grid,goal,heuristic):
 #update heuristics according to position of the ghost
 def updategheuristic(gstart,heuristic):
     hind = [int(round(gstart[0])),int(round(gstart[1]))]
-    for i in range(-3,4):
-        for j in range(-3,4):
+    for i in range(-2,3):
+        for j in range(-2,3):
             try:
                 if(((hind[0]+i) < 0) or ((hind[1]+j) < 0)):
                     continue
                 heuristic[hind[0]+i][hind[1]+j] += 50 - 5*max(abs(i),abs(j))
             except IndexError:
                 continue
-    heuristic[hind[0]][hind[1]] += 50
+    try:
+        heuristic[hind[0]][hind[1]] += 50
+    except IndexError:
+        pass
 
 #evaluate immediate neighbors
 def neighbours(curr,neigh,grid):
