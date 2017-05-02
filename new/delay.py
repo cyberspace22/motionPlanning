@@ -21,17 +21,12 @@ grid=backEndGrid(gridsize)
 print(grid)
 
 A4x4 = []
-<<<<<<< HEAD
-for i in range(200,2800,400):
-    for j in range(200,2800,400):
-=======
 
 for i in range(300,3800,800):
     for j in range(300,3800,800):
         A4x4.append([i,j,i+200,j+200])
 for i in range(700,3800,800):
     for j in range(700,3800,800):
->>>>>>> 35598fe8148ec036bd925beab2eaa22390f7cc01
         A4x4.append([i,j,i+200,j+200])
 
 rect=[]
