@@ -122,8 +122,8 @@ grid_coord=[]
 def createGridVisible(l,objs,objs_h):
     in2=0
     for in2 in range(0,l):
-        grid_coord.append(C.create_line(objs[in2].a,objs[in2].b,objs[in2].c,objs[in2].d,fill="red"))
-        grid_coord.append(C.create_line(objs_h[in2].a,objs_h[in2].b,objs_h[in2].c,objs_h[in2].d,fill="red"))
+        grid_coord.append(C.create_line(objs[in2].a,objs[in2].b,objs[in2].c,objs[in2].d,fill="wheat"))
+        grid_coord.append(C.create_line(objs_h[in2].a,objs_h[in2].b,objs_h[in2].c,objs_h[in2].d,fill="wheat"))
 
     pass
 
@@ -281,7 +281,10 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
         angle =angle+5
         if angle ==45:
             close=1
-
+    # Drawing the grid
+    createGridVisible(l1,objs1,objs_h1)
+    createVisibleObstacles(grid1)
+    
     # Drawing the snake
     tail = 1
     while tail<=snake_s and len(snake_coord)>=tail*int(e):
@@ -308,8 +311,7 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
             snake_s=snake_s-1
             ghosteatssnake.play()
 
-    createGridVisible(l1,objs1,objs_h1)
-    createVisibleObstacles(grid1)
+
     drawGhost(ghcoord)
     regenerateApple()
 
