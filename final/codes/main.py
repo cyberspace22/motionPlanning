@@ -42,7 +42,7 @@ snake_coord = []
 snake_size=2
 
 #sound effects
-song = pygame.mixer.Sound('pacman_eatfruit.wav')
+song = pygame.mixer.Sound('snakeeatsapple.wav')
 ghosteatssnake = pygame.mixer.Sound('ghost.wav')
 
 #details for ghost
@@ -216,9 +216,9 @@ def generateApple():
 # Redrawing geerated apple
 
 def regenerateApple(i):
-    global obsgh
+    #global obsgh
     [x,y]=apple[i]
-    obsgh.append([x,y])
+    #obsgh.append([x,y])
     C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
 
 # Draw the ghost
