@@ -181,7 +181,7 @@ def on_key_press(event):
         QUIT = True
 
 apple=[]
-
+applenum = 0
 
 top = Tkinter.Tk()
 top.title("SnakeMan")
@@ -196,19 +196,22 @@ appleimage = Tkinter.PhotoImage(file = 'apple.png')
 ghostimage = Tkinter.PhotoImage(file = 'ghost.png')
 
 # Randomly generating apple on the map
-def generateApple(ghostc):
-    x,y=-1,-1
-    while (x==-1 and y==-1) or grid[x][y]!=0 or ghostc == [x,y]:
-        x= randint(0,gridsize-1)
-        y= randint(0,gridsize-1)
+def generateApple():
+    for i in range(1,100):
+        x,y=-1,-1
+        while (x==-1 and y==-1) or grid[x][y]!=0 or gstart == [x,y]:
+            x= randint(0,gridsize-1)
+            y= randint(0,gridsize-1)
+        apple.append([x,y])
+        print i
 
-    apple.append([x,y])
-    C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
-    return x,y
+    #apple.append([x,y])
+    #C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
+    #return x,y
 
 # Redrawing geerated apple
-def regenerateApple():
-    [x,y]=apple[-1]
+def regenerateApple(i):
+    [x,y]=apple[i]
     C.create_image(x*e+e/2, y*e+e/2, image=appleimage)
 
 # Draw the ghost
@@ -233,7 +236,7 @@ snakespeed = 1.5
 def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orientation):
 
     global static
-
+    global applenum
     global shut
     C.delete(Tkinter.ALL)
 
@@ -313,17 +316,18 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
 
 
     drawGhost(ghcoord)
-    regenerateApple()
+    regenerateApple(applenum)
 
     if ceil(coord[0]/e)==goal_position[1] and ceil(coord[1]/e)==goal_position[0]:
         print "Reached apple"
         snake_s = snake_s+1
         song.play()
         pathtotake=-1
+        applenum = applenum +1
 
-        while pathtotake==-1:
-            goal_position[1],goal_position[0]=generateApple(ghcoord)
-            pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
+        #while pathtotake==-1:
+    goal_position[1],goal_position[0]=apple[applenum]
+        #    pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
 
     if (coord[0]%e==0 and coord[1]%e==0):
         if len(snake_coord)>int(ceil(e/snakespeed))*(snake_s)-1:
@@ -337,10 +341,13 @@ def snake(coord,angle,close,flag12,l1,objs1,objs_h1,grid1,counter,snake_s,orient
 C.pack()
 
 pathtotake=-1
+generateApple()
 
-while pathtotake==-1:
-    goal_position[1],goal_position[0]=generateApple(gstart)
-    pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
+#while pathtotake==-1:
+goal_position[1],goal_position[0]=apple[applenum]
+regenerateApple(applenum)
+
+pathtotake = astar_v2(initial_position,grid.tolist(),goal_position,ghcoord)
 
 #print goal_position
 top.after(10,lambda: snake(coordinate,angle,close,flag1,l,objs,objs_h,grid,counter,snake_size,pathtotake[1][2]))
